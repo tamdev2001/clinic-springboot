@@ -1,9 +1,11 @@
 package com.dev.clinic.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,11 +13,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -63,9 +68,13 @@ public class User {
     @Column(name = "user_name")
     private String username;
 
+    @Size(max = 100)
+    @Column
+    private String email;
+
     @NotNull
     @Basic(optional = false)
-    @Size(min = 1, max = 25)
+    @Size(min = 1, max = 100)
     @Column(name = "pass_word")
     private String password;
 
@@ -76,10 +85,6 @@ public class User {
     @Column
     private String avatar;
 
-    @Size(max = 100)
-    @Column
-    private String email;
-    
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -92,10 +97,24 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Certificate> certificates;
 
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false, referencedColumnName = "id")
-    private Role role;
-    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles = new HashSet<>(); // new HashSet() unless roles are null
+
+    @Transient
+    private String comfirmPassword;
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(int roleId) {
+        Role role = this.roles.stream().filter(r -> r.getId() == roleId).findFirst().orElse(null);
+        if (role != null) {
+            this.roles.remove(role);
+            role.getUsers().remove(this);
+        }
+    }
+
 }
