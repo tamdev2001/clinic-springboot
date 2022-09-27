@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -34,9 +35,7 @@ public class Role {
     @Size(min = 1, max = 25)
     @Column(nullable = false)
     private String name;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    private Set<User> users;
     
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 }
