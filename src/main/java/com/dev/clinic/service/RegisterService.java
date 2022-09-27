@@ -9,7 +9,7 @@ public interface RegisterService {
     
     Register creatRegister(Register register);
 
-    List<Register> getAllRegisters();
+    List<Register> getAllRegisters(String name, String phone);
 
     Register getRegisterById(long id);
 

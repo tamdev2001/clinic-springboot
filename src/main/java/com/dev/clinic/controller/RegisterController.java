@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.clinic.model.Register;
@@ -25,8 +26,9 @@ public class RegisterController {
     private RegisterService registerService;
 
     @GetMapping
-    public ResponseEntity<List<Register>> getAllRegisters() {
-        List<Register> registers = this.registerService.getAllRegisters();
+    public ResponseEntity<List<Register>> getAllRegisters(@RequestParam(required = true, defaultValue = "") String name,
+            @RequestParam(required = false, defaultValue = "") String phone) {
+        List<Register> registers = this.registerService.getAllRegisters(name, phone);
         return ResponseEntity.ok(registers);
     }
 

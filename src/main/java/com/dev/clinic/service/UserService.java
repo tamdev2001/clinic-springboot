@@ -25,4 +25,6 @@ public interface UserService extends UserDetailsService {
     Set<Register> getRegistersByUserId(long id);
 
     Set<Certificate> getCertificatesByUserId(long id);
+
+    User getCurrentUser();
 }

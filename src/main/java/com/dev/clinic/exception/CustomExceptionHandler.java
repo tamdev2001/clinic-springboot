@@ -27,4 +27,10 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handlerUnauthorizedException(UnauthorizedException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
+
 }

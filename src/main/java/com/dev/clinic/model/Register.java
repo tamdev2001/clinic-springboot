@@ -1,6 +1,7 @@
 package com.dev.clinic.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -39,7 +40,6 @@ public class Register {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
 
     @Column(name = "examination_time")
@@ -76,6 +76,6 @@ public class Register {
 
     @JsonIgnore
     @OneToMany(mappedBy = "register", fetch = FetchType.LAZY)
-    private Set<Certificate> certificates;
+    private Set<Certificate> certificates = new HashSet<>();
 
 }

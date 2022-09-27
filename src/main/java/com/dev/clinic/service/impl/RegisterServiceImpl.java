@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.Register;
 import com.dev.clinic.repository.RegisterRepository;
 import com.dev.clinic.service.RegisterService;
@@ -25,8 +26,8 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public List<Register> getAllRegisters() {
-        return this.registerRepository.findAll();
+    public List<Register> getAllRegisters(String name, String phone) {
+        return this.registerRepository.findByNameOrPhoneContaining(name, phone);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class RegisterServiceImpl implements RegisterService {
             Register register = rOptional.get();
             return register;
         }
-        return null;
+        throw new NotFoundException("Not found register");
     }
 
     @Override

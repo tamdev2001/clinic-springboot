@@ -21,6 +21,7 @@ import com.dev.clinic.dto.UserDto;
 import com.dev.clinic.exception.BadRequestException;
 import com.dev.clinic.exception.InternalException;
 import com.dev.clinic.exception.NotFoundException;
+import com.dev.clinic.exception.UnauthorizedException;
 import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Register;
 import com.dev.clinic.model.Role;
@@ -28,6 +29,7 @@ import com.dev.clinic.model.User;
 import com.dev.clinic.repository.RoleRepository;
 import com.dev.clinic.repository.UserRepository;
 import com.dev.clinic.service.UserService;
+import com.dev.clinic.util.CommonMethod;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -175,6 +177,20 @@ public class UserServiceImpl implements UserService {
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+    }
+
+    @Override
+    public User getCurrentUser() {
+        String currentUsername = CommonMethod.getCurrentUsername();
+        if (currentUsername != null) {
+            Optional<User> uOptional = this.userRepository.findByUsername(currentUsername);
+            if (uOptional.isPresent()) {
+                return uOptional.get();
+            }
+            throw new NotFoundException("Username " + currentUsername + " does not exist!");
+        }
+        
+        throw new UnauthorizedException("User is not authenticared!");
     }
 
 }

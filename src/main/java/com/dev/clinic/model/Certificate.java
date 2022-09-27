@@ -54,11 +54,11 @@ public class Certificate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_id", nullable = false, referencedColumnName = "id")
     private Register register;
-
+    
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "user_id", nullable = true, referencedColumnName = "id")
     private User user;
     
 }
