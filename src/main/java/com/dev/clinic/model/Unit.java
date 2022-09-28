@@ -1,5 +1,6 @@
 package com.dev.clinic.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,8 +26,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "unit")
-public class Unit {
-    
+public class Unit implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

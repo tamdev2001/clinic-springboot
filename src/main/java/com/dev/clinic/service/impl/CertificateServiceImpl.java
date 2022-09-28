@@ -1,5 +1,6 @@
 package com.dev.clinic.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Register;
 import com.dev.clinic.model.User;
 import com.dev.clinic.repository.CertificateRepository;
+import com.dev.clinic.repository.RegisterRepository;
 import com.dev.clinic.service.CertificateService;
 import com.dev.clinic.service.RegisterService;
 import com.dev.clinic.service.UserService;
@@ -21,10 +23,23 @@ public class CertificateServiceImpl implements CertificateService {
     private CertificateRepository certificateRepository;
 
     @Autowired
+    private RegisterRepository registerRepository;
+
+    @Autowired
     private RegisterService registerService;
 
     @Autowired
     private UserService userService;
+
+    @Override
+    public Certificate getCetificateById(long certificateId) {
+        Optional<Certificate> cOptional = this.certificateRepository.findById(certificateId);
+        if (cOptional.isPresent()) {
+            return cOptional.get();
+        }
+
+        throw new NotFoundException("Certificate does not exist!");
+    }
 
     @Override
     public Certificate createCertificate(long registerId, Certificate certificate) {
@@ -67,6 +82,23 @@ public class CertificateServiceImpl implements CertificateService {
         }
 
         throw new NotFoundException("Certificate does not exist!");
+    }
+
+    @Override
+    public List<Certificate> getCertificatesByRegisterId(long registerId) {
+        boolean existRegistered = this.registerRepository.existsById(registerId);
+
+        if (!existRegistered) {
+            throw new NotFoundException("Register does not exist!");
+        }
+
+        List<Certificate> certificates = this.certificateRepository.findByRegisterId(registerId);
+
+        if (!certificates.isEmpty()) {
+            return certificates;
+        }
+
+        throw new NotFoundException("Register " + registerId + " does not have any Certification!");
     }
 
 }

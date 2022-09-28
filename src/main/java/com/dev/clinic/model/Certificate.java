@@ -1,5 +1,6 @@
 package com.dev.clinic.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "certificate")
-public class Certificate {
+public class Certificate implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

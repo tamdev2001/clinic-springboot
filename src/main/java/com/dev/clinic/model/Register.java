@@ -1,5 +1,6 @@
 package com.dev.clinic.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +37,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "register")
-public class Register {
+public class Register implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

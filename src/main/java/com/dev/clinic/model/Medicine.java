@@ -1,8 +1,10 @@
 package com.dev.clinic.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -28,11 +31,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "medicine")
-public class Medicine {
-    
+public class Medicine implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; 
 
     @Size(max = 50)
     @Column(nullable = false)
@@ -60,7 +63,7 @@ public class Medicine {
     private Unit unit;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "medicines", fetch = FetchType.LAZY)
-    private Set<Prescription> prescriptions = new HashSet<>();
-    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medicine", fetch = FetchType.LAZY)
+    private Set<PrescriptionMedicine> prescriptions = new HashSet<>();
+
 }

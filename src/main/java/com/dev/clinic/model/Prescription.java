@@ -1,5 +1,7 @@
 package com.dev.clinic.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,7 +38,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "precription")
-public class Prescription {
+public class Prescription implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,21 +54,28 @@ public class Prescription {
     @JoinColumn(name = "certificate_id", nullable = false, referencedColumnName = "id")
     private Certificate certificate;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-    @JoinTable(name = "prescription_detail", joinColumns = @JoinColumn(name = "perscription_id"), inverseJoinColumns = @JoinColumn(name = "medicine_id"))
-    private Set<Medicine> medicines = new HashSet<>();
+    // @JsonIgnore
+    // @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    // @JoinTable(name = "prescription_detail", joinColumns = @JoinColumn(name =
+    // "perscription_id"), inverseJoinColumns = @JoinColumn(name = "medicine_id"))
+    // private Set<Medicine> medicines = new HashSet<>();
 
-    public void addMedicine(Medicine medicine) {
-        this.medicines.add(medicine);
-        medicine.getPrescriptions().add(this);
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "prescription")
+    private Set<PrescriptionMedicine> medicines = new HashSet<>();
+
+    public void addMedicine(Medicine medicine, int quanity) {
+        PrescriptionMedicine prescriptionMedicine = new PrescriptionMedicine(medicine, this, quanity);
+        this.medicines.add(prescriptionMedicine);
+        medicine.getPrescriptions().add(prescriptionMedicine);
     }
 
     public void removeMedicine(long medicineId) {
-        Medicine medicine = this.medicines.stream().filter(m -> m.getId() == medicineId).findFirst().orElse(null);
-        if (medicine != null) {
-            this.medicines.remove(medicine);
-            medicine.getPrescriptions().remove(this);
+        PrescriptionMedicine prescriptionMedicine = this.medicines.stream()
+                .filter(m -> m.getMedicine().getId() == medicineId).findFirst().orElse(null);
+        if (prescriptionMedicine != null) {
+            this.medicines.remove(prescriptionMedicine);
+            prescriptionMedicine.getMedicine().getPrescriptions().remove(prescriptionMedicine);
         }
     }
 
