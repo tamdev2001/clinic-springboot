@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -64,19 +66,64 @@ public class Prescription implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "prescription")
     private Set<PrescriptionMedicine> medicines = new HashSet<>();
 
+    // public void addMedicine(Medicine medicine, int quanity) {
+    // PrescriptionMedicine prescriptionMedicine = new
+    // PrescriptionMedicine(medicine, this, quanity);
+
+    // this.medicines.add(prescriptionMedicine);
+    // // medicine.getPrescriptions().add(prescriptionMedicine);
+    // }
+
+    // public void removeMedicine(long medicineId) {
+    // PrescriptionMedicine prescriptionMedicine = this.medicines.stream()
+    // .filter(m -> m.getMedicine().getId() == medicineId).findFirst().orElse(null);
+    // long aa = prescriptionMedicine.getMedicine().getId();
+    // if (prescriptionMedicine != null) {
+    // this.medicines.remove(prescriptionMedicine);
+
+    // prescriptionMedicine.getMedicine().getPrescriptions().remove(prescriptionMedicine);
+    // }
+    // }
+
     public void addMedicine(Medicine medicine, int quanity) {
         PrescriptionMedicine prescriptionMedicine = new PrescriptionMedicine(medicine, this, quanity);
         this.medicines.add(prescriptionMedicine);
-        medicine.getPrescriptions().add(prescriptionMedicine);
     }
 
-    public void removeMedicine(long medicineId) {
-        PrescriptionMedicine prescriptionMedicine = this.medicines.stream()
+    public PrescriptionMedicine getPrescriptionMedicine(long medicineId) {
+        return this.medicines.stream()
                 .filter(m -> m.getMedicine().getId() == medicineId).findFirst().orElse(null);
-        if (prescriptionMedicine != null) {
-            this.medicines.remove(prescriptionMedicine);
-            prescriptionMedicine.getMedicine().getPrescriptions().remove(prescriptionMedicine);
-        }
+    }
+
+    // public void removeMedicine(Medicine medicine) {
+    // for (Iterator<PrescriptionMedicine> iterator = this.medicines.iterator();
+    // iterator.hasNext();) {
+    // PrescriptionMedicine prescriptionMedicine = iterator.next();
+
+    // if (prescriptionMedicine.getPrescription().equals(this) &&
+    // prescriptionMedicine.getMedicine().equals(medicine)) {
+    // iterator.remove();
+    // prescriptionMedicine.setPrescription(null);
+    // prescriptionMedicine.setMedicine(null);
+    // }
+    // }
+    // }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Prescription prescription = (Prescription) o;
+        return Objects.equals(this.getId(), prescription.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId());
     }
 
 }

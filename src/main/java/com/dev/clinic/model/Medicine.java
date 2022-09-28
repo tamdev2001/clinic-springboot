@@ -35,7 +35,7 @@ public class Medicine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
+    private Long id;
 
     @Size(max = 50)
     @Column(nullable = false)

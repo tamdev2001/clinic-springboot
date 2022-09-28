@@ -9,4 +9,4 @@ import com.dev.clinic.model.Prescription;
 public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
     
     List<Prescription> findByCertificateId(long certificateId);
-}
+} 

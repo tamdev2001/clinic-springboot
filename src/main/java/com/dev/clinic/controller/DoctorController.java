@@ -1,7 +1,6 @@
 package com.dev.clinic.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ import com.dev.clinic.model.Medicine;
 import com.dev.clinic.model.Prescription;
 import com.dev.clinic.service.CertificateService;
 import com.dev.clinic.service.PrescriptionService;
-import com.dev.clinic.service.RegisterService;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -29,9 +27,6 @@ public class DoctorController {
 
     @Autowired
     private CertificateService certificateService;
-
-    @Autowired
-    private RegisterService registerService;
 
     @Autowired
     private PrescriptionService prescriptionService;
@@ -119,7 +114,7 @@ public class DoctorController {
     }
 
     @DeleteMapping("prescriptions/{prescriptionId}/medicines/{medicineId}")
-    public ResponseEntity<Boolean> reoveMedicineFromPresciption(@PathVariable long prescriptionId,
+    public ResponseEntity<Boolean> removeMedicineFromPresciption(@PathVariable long prescriptionId,
             @PathVariable long medicineId) {
         boolean result = this.prescriptionService.reoveMedicineFromPresciption(medicineId, prescriptionId);
         return ResponseEntity.ok(result);

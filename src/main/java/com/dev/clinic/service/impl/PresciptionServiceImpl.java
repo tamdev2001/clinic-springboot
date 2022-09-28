@@ -2,15 +2,20 @@ package com.dev.clinic.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.dev.clinic.exception.InternalException;
 import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Medicine;
 import com.dev.clinic.model.Prescription;
+import com.dev.clinic.model.PrescriptionMedicine;
 import com.dev.clinic.repository.CertificateRepository;
+import com.dev.clinic.repository.PrescriptionMedicineRepository;
 import com.dev.clinic.repository.PrescriptionRepository;
 import com.dev.clinic.service.CertificateService;
 import com.dev.clinic.service.MedicineService;
@@ -30,6 +35,9 @@ public class PresciptionServiceImpl implements PrescriptionService {
 
     @Autowired
     private MedicineService medicineService;
+
+    @Autowired
+    private PrescriptionMedicineRepository prescriptionMedicineRepository;
 
     @Override
     public Prescription createPrescription(long certificateId, Prescription prescription) {
@@ -97,8 +105,8 @@ public class PresciptionServiceImpl implements PrescriptionService {
             quantity = 1;
         }
 
-        Medicine medicine = this.medicineService.getMedicineById(medicineId);
         Prescription prescription = this.getPrescriptionById(prescriptionId);
+        Medicine medicine = this.medicineService.getMedicineById(medicineId);
         prescription.addMedicine(medicine, quantity);
 
         this.prescriptionRepository.save(prescription);
@@ -109,11 +117,18 @@ public class PresciptionServiceImpl implements PrescriptionService {
     @Override
     public Boolean reoveMedicineFromPresciption(long medicineId, long prescriptionId) {
         Prescription prescription = this.getPrescriptionById(prescriptionId);
-        prescription.removeMedicine(medicineId);
+        PrescriptionMedicine prescriptionMedicine = prescription.getPrescriptionMedicine(medicineId);
 
-        this.prescriptionRepository.save(prescription);
+        if (prescriptionMedicine != null) {
+            try {
+                this.prescriptionMedicineRepository.deleteByPMId(prescriptionMedicine.getId());
+            } catch (DataAccessException ex) {
+                throw new InternalException(ex.getMessage());
+            }
+            return true;
+        }
 
-        return true;
+        throw new NotFoundException("Medicine does not exist in Prescription!");
     }
 
 }

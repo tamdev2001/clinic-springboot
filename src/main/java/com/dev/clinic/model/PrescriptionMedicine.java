@@ -34,11 +34,11 @@ public class PrescriptionMedicine implements Serializable {
     private Integer quantity;
 
     @JoinColumn(name = "prescription_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Prescription prescription;
 
     @JoinColumn(name = "medicine_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Medicine medicine;
 
     public PrescriptionMedicine(Medicine medicine, Prescription prescription, int quantity) {
@@ -64,4 +64,8 @@ public class PrescriptionMedicine implements Serializable {
         return Objects.hash(prescription.getId(), medicine.getId());
     }
 
+    @Override
+    public String toString() {
+        return "com.ntt.model.PrescriptionMedicine[ medicine_id=" + medicine.getId() + " ]";
+    }
 }
