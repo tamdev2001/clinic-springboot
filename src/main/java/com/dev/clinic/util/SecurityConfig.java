@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -37,13 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .anyRequest().permitAll();
-                // .antMatchers("/api/**").permitAll()
-                // .antMatchers(HttpMethod.GET, "/api/**").permitAll();
-                // .antMatchers("/api/auth/**").permitAll()
-                // .anyRequest()
-                // .authenticated()
-                // .and()
-                // .httpBasic();
+        // .antMatchers("/api/**").permitAll()
+        // .antMatchers(HttpMethod.GET, "/api/**").permitAll();
+        // .antMatchers("/api/auth/**").permitAll()
+        // .anyRequest()
+        // .authenticated()
+        // .and()
+        // .httpBasic();
     }
 
     @Override
@@ -58,13 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    //    @Override
-//    @Bean
-//    protected UserDetailsService userDetailsService() {
-//        UserDetails ramesh = User.builder().username("ramesh").password(passwordEncoder()
-//                .encode("password")).roles("USER").build();
-//        UserDetails admin = User.builder().username("admin").password(passwordEncoder()
-//                .encode("admin")).roles("ADMIN").build();
-//        return new InMemoryUserDetailsManager(ramesh, admin);
-//    }
+    // @Override
+    // @Bean
+    // protected UserDetailsService userDetailsService() {
+    // UserDetails ramesh =
+    // User.builder().username("ramesh").password(passwordEncoder()
+    // .encode("password")).roles("USER").build();
+    // UserDetails admin =
+    // User.builder().username("admin").password(passwordEncoder()
+    // .encode("admin")).roles("ADMIN").build();
+    // return new InMemoryUserDetailsManager(ramesh, admin);
+    // }
 }

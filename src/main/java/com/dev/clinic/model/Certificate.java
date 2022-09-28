@@ -33,7 +33,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "certificate")
 public class Certificate implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,11 +55,11 @@ public class Certificate implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_id", nullable = false, referencedColumnName = "id")
     private Register register;
-    
+
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true, referencedColumnName = "id")
     private User user;
-    
+
 }
