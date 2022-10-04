@@ -165,20 +165,6 @@ public class UserServiceImpl implements UserService {
         throw new NotFoundException("User does not exist!");
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "User not found with username or email:" + username));
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), mapRolesToAuthorities(user.getRoles()));
-    }
-
     @Override
     public User getCurrentUser() {
         String currentUsername = CommonMethod.getCurrentUsername();

@@ -62,7 +62,7 @@ public class User implements Serializable {
     @NotNull
     @Basic(optional = false)
     @Size(min = 1, max = 25)
-    @Column(name = "user_name")
+    @Column(name = "username")
     private String username;
 
     @Size(max = 100)
@@ -72,7 +72,7 @@ public class User implements Serializable {
     @NotNull
     @Basic(optional = false)
     @Size(min = 1, max = 100)
-    @Column(name = "pass_word")
+    @Column(name = "password")
     private String password;
 
     @Column
@@ -113,5 +113,4 @@ public class User implements Serializable {
             role.getUsers().remove(this);
         }
     }
-
 }
