@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import com.dev.clinic.model.User;
 import com.dev.clinic.service.UserService;
 import com.dev.clinic.util.CommonMethod;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -38,7 +40,7 @@ public class AuthController {
 
         return ResponseEntity.ok("User signed-in successfully!");
     }
-
+    
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         UserDto newUser = this.userService.createUser(user);
