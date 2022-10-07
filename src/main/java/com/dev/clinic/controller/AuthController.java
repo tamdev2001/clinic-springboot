@@ -72,12 +72,34 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getPhone(),
+                userDetails.getAvatar(),
                 roles));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        
+    public ResponseEntity<?> registerUser(@RequestParam("file") MultipartFile file,
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("comfirmPassword") String comfirmPassword,
+            @RequestParam("phone") String phone) {
+
+        String img;
+        User user = new User();
+        try {
+
+            Map resolve;
+            resolve = this.cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("resource_type", "auto"));
+            img = (String) resolve.get("secure_url");
+            user.setAvatar(img);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setPhone(phone);
+            user.setComfirmPassword(comfirmPassword);
+        } catch (IOException ex) {
+            throw new NotFoundException("anh loi nhe");
+        }
         UserDto newUser = this.userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
