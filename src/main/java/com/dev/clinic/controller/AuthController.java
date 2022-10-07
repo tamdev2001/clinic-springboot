@@ -77,16 +77,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        // try {
-            
-        //     Map resolve;
-        //     resolve = this.cloudinary.uploader().upload(user.getImage().getBytes(),
-        //             ObjectUtils.asMap("resource_type", "auto"));
-        //     String img = (String) resolve.get("secure_url");
-        //     user.setAvatar(img);
-        // } catch (IOException ex) { 
-        //     throw new NotFoundException("anh loi nhe");
-        // }
+        
         UserDto newUser = this.userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
