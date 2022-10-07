@@ -1,5 +1,7 @@
 package com.dev.clinic.controller;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,11 +18,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.dev.clinic.payload.response.JwtResponse;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dev.clinic.payload.response.JwtResponse;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.dev.clinic.dto.LoginDto;
 import com.dev.clinic.dto.UserDto;
+import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.User;
 import com.dev.clinic.security.jwt.JwtUtils;
 import com.dev.clinic.security.services.UserDetailsImpl;
@@ -43,6 +50,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
@@ -67,6 +77,16 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
+        // try {
+            
+        //     Map resolve;
+        //     resolve = this.cloudinary.uploader().upload(user.getImage().getBytes(),
+        //             ObjectUtils.asMap("resource_type", "auto"));
+        //     String img = (String) resolve.get("secure_url");
+        //     user.setAvatar(img);
+        // } catch (IOException ex) { 
+        //     throw new NotFoundException("anh loi nhe");
+        // }
         UserDto newUser = this.userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
