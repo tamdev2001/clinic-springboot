@@ -50,14 +50,15 @@ public class Medicine implements Serializable {
     @Column(name = "quantity_per_unit")
     private Integer quantityPerUnit;
 
+    @JsonIgnore
     @Column
     private Integer quantity;
 
+    @JsonIgnore
     @Column
     private Boolean actived = true;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "unit_id", nullable = false, referencedColumnName = "id")
     private Unit unit;
 

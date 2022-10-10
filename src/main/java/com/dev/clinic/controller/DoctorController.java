@@ -20,6 +20,7 @@ import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Medicine;
 import com.dev.clinic.model.Prescription;
 import com.dev.clinic.service.CertificateService;
+import com.dev.clinic.service.MedicineService;
 import com.dev.clinic.service.PrescriptionService;
 
 @CrossOrigin
@@ -32,6 +33,9 @@ public class DoctorController {
 
     @Autowired
     private PrescriptionService prescriptionService;
+
+    @Autowired
+    private MedicineService medicineService;
 
     // #region certificate
     @GetMapping("/certificates/{id}")
@@ -90,6 +94,13 @@ public class DoctorController {
         List<Prescription> prescriptions = this.prescriptionService.getPrescriptionsByCertificateId(certificateId);
 
         return ResponseEntity.ok(prescriptions);
+    }
+
+    @GetMapping("medicines")
+    public ResponseEntity<List<Medicine>> getMedicines() {
+        List<Medicine> medicines = this.medicineService.getMedicines();
+
+        return ResponseEntity.ok(medicines);
     }
 
     @PutMapping("prescriptions/{id}")
