@@ -1,5 +1,7 @@
 package com.dev.clinic.controller;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,11 +18,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.dev.clinic.payload.response.JwtResponse;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dev.clinic.payload.response.JwtResponse;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.dev.clinic.dto.LoginDto;
 import com.dev.clinic.dto.UserDto;
+import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.User;
 import com.dev.clinic.security.jwt.JwtUtils;
 import com.dev.clinic.security.services.UserDetailsImpl;
@@ -44,6 +51,9 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    private Cloudinary cloudinary;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -62,11 +72,34 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getPhone(),
+                userDetails.getAvatar(),
                 roles));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    public ResponseEntity<?> registerUser(@RequestParam("file") MultipartFile file,
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("comfirmPassword") String comfirmPassword,
+            @RequestParam("phone") String phone) {
+
+        String img;
+        User user = new User();
+        try {
+
+            Map resolve;
+            resolve = this.cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("resource_type", "auto"));
+            img = (String) resolve.get("secure_url");
+            user.setAvatar(img);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setPhone(phone);
+            user.setComfirmPassword(comfirmPassword);
+        } catch (IOException ex) {
+            throw new NotFoundException("anh loi nhe");
+        }
         UserDto newUser = this.userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }

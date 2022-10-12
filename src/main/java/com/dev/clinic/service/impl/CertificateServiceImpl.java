@@ -1,5 +1,6 @@
 package com.dev.clinic.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,7 @@ public class CertificateServiceImpl implements CertificateService {
 
         certificate.setRegister(register);
         certificate.setUser(currentUser);
+        certificate.setCreatedDate(new Date());
 
         certificate.setId(null);
         Certificate newCertificate = this.certificateRepository.save(certificate);

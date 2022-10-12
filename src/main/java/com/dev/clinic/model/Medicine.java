@@ -50,9 +50,11 @@ public class Medicine implements Serializable {
     @Column(name = "quantity_per_unit")
     private Integer quantityPerUnit;
 
+    @JsonIgnore
     @Column
     private Integer quantity;
 
+    @JsonIgnore
     @Column
     private Boolean actived = true;
 

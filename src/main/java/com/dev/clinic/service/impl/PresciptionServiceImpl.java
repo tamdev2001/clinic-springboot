@@ -1,5 +1,6 @@
 package com.dev.clinic.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,7 @@ public class PresciptionServiceImpl implements PrescriptionService {
     public Prescription createPrescription(long certificateId, Prescription prescription) {
         Certificate certificate = this.certificateService.getCetificateById(certificateId);
         prescription.setCertificate(certificate);
+        prescription.setCreatedDate(new Date());
 
         Prescription newPrescription = this.prescriptionRepository.save(prescription);
 
