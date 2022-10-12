@@ -56,8 +56,7 @@ public class Medicine implements Serializable {
     @Column
     private Boolean actived = true;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "unit_id", nullable = false, referencedColumnName = "id")
     private Unit unit;
 

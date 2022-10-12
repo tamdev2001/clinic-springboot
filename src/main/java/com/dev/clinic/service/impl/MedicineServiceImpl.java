@@ -1,5 +1,6 @@
 package com.dev.clinic.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,15 @@ public class MedicineServiceImpl implements MedicineService {
         }
 
         throw new NotFoundException("Medicine does not exist!");
+    }
+
+    @Override
+    public List<Medicine> getMedicines(String name) {
+        List<Medicine> medicines = this.medicineRepository.findByNameContaining(name);
+        if (medicines.isEmpty()) {
+            throw new NotFoundException("Medicine does not exist!");
+        }
+        return medicines;
     }
 
 }

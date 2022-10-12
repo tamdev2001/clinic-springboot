@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,8 +35,9 @@ public class PrescriptionMedicine implements Serializable {
     @Column
     private Integer quantity;
 
+    @JsonIgnore
     @JoinColumn(name = "prescription_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Prescription prescription;
 
     @JoinColumn(name = "medicine_id", referencedColumnName = "id")

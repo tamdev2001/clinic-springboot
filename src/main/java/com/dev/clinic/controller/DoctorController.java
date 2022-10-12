@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Medicine;
 import com.dev.clinic.model.Prescription;
+import com.dev.clinic.model.PrescriptionMedicine;
 import com.dev.clinic.service.CertificateService;
+import com.dev.clinic.service.MedicineService;
 import com.dev.clinic.service.PrescriptionService;
 
 @CrossOrigin
@@ -32,6 +34,9 @@ public class DoctorController {
 
     @Autowired
     private PrescriptionService prescriptionService;
+
+    @Autowired
+    private MedicineService medicineService;
 
     // #region certificate
     @GetMapping("/certificates/{id}")
@@ -120,6 +125,19 @@ public class DoctorController {
             @PathVariable long medicineId) {
         boolean result = this.prescriptionService.reoveMedicineFromPresciption(medicineId, prescriptionId);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("prescriptions/{prescriptionId}/details") 
+    public ResponseEntity<?> getPrescriptionDetailsByPrescriptionId(@PathVariable long prescriptionId) {
+        List<PrescriptionMedicine> pds = this.prescriptionService.getPrescriptionDetails(prescriptionId);
+
+        return ResponseEntity.ok(pds);
+    }
+
+    @GetMapping("medicines") 
+    public ResponseEntity<List<Medicine>> getMedicines(@RequestParam(required = false, defaultValue = "") String name) {
+        List<Medicine> medicines = this.medicineService.getMedicines(name);
+        return ResponseEntity.ok(medicines);
     }
 
     // #endregion

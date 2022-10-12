@@ -130,4 +130,16 @@ public class PresciptionServiceImpl implements PrescriptionService {
         throw new NotFoundException("Medicine does not exist in Prescription!");
     }
 
+    @Override
+    public List<PrescriptionMedicine> getPrescriptionDetails(long prescriptionId) {
+        Prescription prescription = this.getPrescriptionById(prescriptionId);
+        List<PrescriptionMedicine> pds = this.prescriptionMedicineRepository.findByPrescription(prescription);
+
+        if (pds.isEmpty()) {
+            throw new NotFoundException("Prescription does not any medicin!");
+        }
+
+        return pds;
+    }
+
 }

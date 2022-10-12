@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dev.clinic.model.Medicine;
 import com.dev.clinic.model.Prescription;
+import com.dev.clinic.model.PrescriptionMedicine;
 
 public interface PrescriptionService {
 
@@ -20,5 +21,7 @@ public interface PrescriptionService {
     Medicine addMedicineToPresciption(long medicineId, long prescriptionId, Integer quantity);
 
     Boolean reoveMedicineFromPresciption(long medicineId, long prescriptionId);
+
+    List<PrescriptionMedicine> getPrescriptionDetails(long prescriptionId);
 
 }
