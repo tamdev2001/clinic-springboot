@@ -97,13 +97,6 @@ public class DoctorController {
         return ResponseEntity.ok(prescriptions);
     }
 
-    @GetMapping("medicines")
-    public ResponseEntity<List<Medicine>> getMedicines() {
-        List<Medicine> medicines = this.medicineService.getMedicines();
-
-        return ResponseEntity.ok(medicines);
-    }
-
     @PutMapping("prescriptions/{id}")
     public ResponseEntity<Prescription> updatePrescription(@PathVariable long id,
             @RequestBody Prescription prescription) {
