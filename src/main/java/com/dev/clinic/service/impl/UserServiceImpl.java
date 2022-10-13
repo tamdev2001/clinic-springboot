@@ -179,4 +179,26 @@ public class UserServiceImpl implements UserService {
         throw new UnauthorizedException("User is not authenticared!");
     }
 
+    @Override
+    public Set<Certificate> getCertificatesByCurrentUser() {
+        User user = this.getCurrentUser();
+        Set<Certificate> certificates = user.getCertificates();
+
+        if (!certificates.isEmpty()) {
+            return certificates;
+        }
+        throw new NotFoundException("User does not have any certificates!");
+    }
+
+    @Override
+    public Set<Register> getRegistersByCurrentUser() {
+        User user = this.getCurrentUser();
+        Set<Register> registers = user.getRegisters();
+
+        if (!registers.isEmpty()) {
+            return registers;
+        }
+        throw new NotFoundException("User does not have any registers!");
+    }
+
 }

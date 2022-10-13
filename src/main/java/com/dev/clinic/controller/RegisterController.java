@@ -44,7 +44,7 @@ public class RegisterController {
     }
 
     @PostMapping
-    public ResponseEntity<Register> creatEntity(@RequestBody Register register) {
+    public ResponseEntity<Register> createRegister(@RequestBody Register register) {
         Register newRegister = this.registerService.creatRegister(register);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newRegister);

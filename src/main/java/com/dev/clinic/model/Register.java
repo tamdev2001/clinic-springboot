@@ -64,10 +64,9 @@ public class Register implements Serializable {
     @Column
     private Boolean verified = false;
 
-    @JsonIgnore
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private Date createdDate = new Date();
 
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.NO_ACTION)

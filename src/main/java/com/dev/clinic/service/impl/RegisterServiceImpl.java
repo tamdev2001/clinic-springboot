@@ -9,19 +9,32 @@ import org.springframework.stereotype.Service;
 
 import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.Register;
+import com.dev.clinic.model.User;
 import com.dev.clinic.repository.RegisterRepository;
 import com.dev.clinic.service.RegisterService;
+import com.dev.clinic.service.UserService;
+import com.dev.clinic.util.CommonMethod;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private RegisterRepository registerRepository;
+    
+    @Autowired
+    private UserService userService;
 
     @Override
     public Register creatRegister(Register register) {
         register.setVerified(false);
         register.setCreatedDate(new Date());
+
+        String currentUsername = CommonMethod.getCurrentUsername();
+        if (currentUsername != null) {
+            User user = this.userService.getCurrentUser();
+            register.setUser(user);
+        }
+
         return this.registerRepository.save(register);
     }
 

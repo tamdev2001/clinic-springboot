@@ -72,4 +72,16 @@ public class UserController {
         return ResponseEntity.ok(certificates);
     }
 
+    @GetMapping("certificates")
+    public ResponseEntity<Set<Certificate>> getCertificatesByCurrentUser() {
+        Set<Certificate> certificates = this.userService.getCertificatesByCurrentUser();
+        return ResponseEntity.ok(certificates);
+    }
+
+    @GetMapping("registers")
+    public ResponseEntity<Set<Register>> getRegistersByCurrentUser() {
+        Set<Register> registers = this.userService.getRegistersByCurrentUser();
+        return ResponseEntity.ok(registers);
+    }
+
 }

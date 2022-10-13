@@ -24,5 +24,9 @@ public interface UserService {
 
     Set<Certificate> getCertificatesByUserId(long id);
 
+    Set<Certificate> getCertificatesByCurrentUser();
+
+    Set<Register> getRegistersByCurrentUser();
+
     User getCurrentUser();
 }
