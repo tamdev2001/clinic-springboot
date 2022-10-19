@@ -1,8 +1,8 @@
 package com.dev.clinic.model;
-
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,12 +15,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,42 +29,27 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "certificate")
-public class Certificate implements Serializable {
-
+@Table(name = "receipt")
+public class Receipt implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 255)
-    @Column
-    private String symptom;
-
-    @Size(max = 255)
-    @Column
-    private String conclusion;
+    @Column(name = "price_total")
+    private Double priceTotal;
 
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private Date createdDate = new Date();
 
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Column(name = "is_payment")
+    private Boolean isPayment;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Certificate certificate;
+
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "register_id", nullable = false, referencedColumnName = "id")
-    private Register register;
-
-
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = true, referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
-    @OneToOne(mappedBy = "certificate")
-    private Receipt receipt;
-
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "regulation_id", referencedColumnName = "id")
-    private Regulations regulation;
 }
