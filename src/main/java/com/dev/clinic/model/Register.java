@@ -61,6 +61,10 @@ public class Register implements Serializable {
     @Column(name = "health_issues")
     private String healthIssues;
 
+    @Size(max = 50)
+    @Column
+    private String email;
+
     @Column
     private Boolean verified = false;
 

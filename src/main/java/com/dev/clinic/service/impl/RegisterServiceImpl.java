@@ -1,8 +1,11 @@
 package com.dev.clinic.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +23,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private RegisterRepository registerRepository;
-    
+
     @Autowired
     private UserService userService;
 
@@ -39,8 +42,42 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public List<Register> getAllRegisters(String name, String phone) {
-        return this.registerRepository.findByNameOrPhoneContaining(name, phone);
+    public List<Register> getRegisters(String name, String phone, Boolean verified, String examinationTime,
+            String createdDate) {
+
+        List<Register> registers;
+
+        if (!examinationTime.equals("")) {
+            try {
+                registers = this.registerRepository
+                        .findByExaminationTime(new SimpleDateFormat("yyyy-MM-dd").parse(examinationTime));
+            } catch (ParseException e) {
+                registers = this.registerRepository.findByNameContaining(name);
+            }
+        } else if (!createdDate.equals("")) {
+            try {
+                registers = this.registerRepository
+                        .findByCreatedDateOnlyDate(new SimpleDateFormat("yyyy-MM-dd").parse(createdDate));
+            } catch (ParseException e) {
+                registers = this.registerRepository.findByNameContaining(name);
+            }
+        } else {
+            registers = this.registerRepository.findByNameContaining(name);
+        }
+
+        if (!phone.equals("")) {
+            registers = registers.stream().filter(r -> r.getPhone().contains(phone)).collect(Collectors.toList());
+        }
+
+        if (verified != null) {
+            registers = registers.stream().filter(r -> r.getVerified() == verified).collect(Collectors.toList());
+        }
+
+        if (registers.isEmpty()) {
+            throw new NotFoundException("Register does not exist!");
+        }
+
+        return registers;
     }
 
     @Override
@@ -62,7 +99,7 @@ public class RegisterServiceImpl implements RegisterService {
             return this.registerRepository.save(register);
         }
 
-        return null;
+        throw new NotFoundException("Not found register");
     }
 
     @Override

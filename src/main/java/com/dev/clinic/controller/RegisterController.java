@@ -27,12 +27,12 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
-    @GetMapping
-    public ResponseEntity<List<Register>> getAllRegisters(@RequestParam(required = true, defaultValue = "") String name,
-            @RequestParam(required = false, defaultValue = "") String phone) {
-        List<Register> registers = this.registerService.getAllRegisters(name, phone);
-        return ResponseEntity.ok(registers);
-    }
+    // @GetMapping
+    // public ResponseEntity<List<Register>> getAllRegisters(@RequestParam(required = true, defaultValue = "") String name,
+    //         @RequestParam(required = false, defaultValue = "") String phone) {
+    //     List<Register> registers = this.registerService.getAllRegisters(name, phone);
+    //     return ResponseEntity.ok(registers);
+    // }
 
     @GetMapping("/{id}")
     public ResponseEntity<Register> getRegisterById(@PathVariable long id) {
