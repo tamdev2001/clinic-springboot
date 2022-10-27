@@ -18,7 +18,6 @@ import com.dev.clinic.security.jwt.AuthEntryPointJwt;
 import com.dev.clinic.security.jwt.AuthTokenFilter;
 import com.dev.clinic.security.services.UserDetailsServiceImpl;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -53,22 +52,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    //     http.cors().and().csrf().disable()
-    //             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-    //             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-    //             .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-    //             .antMatchers("/api/test/**").permitAll()
-    //             .anyRequest().authenticated();
-
-    //     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    // }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/api/doctors/**").access("hasRole('ROLE_DOCTOR')")
+                .antMatchers("/api/nurses/**").access("hasRole('ROLE_NURSE')")
+                .antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll();
         // .antMatchers("/api/**").permitAll()
         // .antMatchers(HttpMethod.GET, "/api/**").permitAll();
