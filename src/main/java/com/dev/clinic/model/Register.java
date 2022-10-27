@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -82,4 +83,11 @@ public class Register implements Serializable {
     @OneToMany(mappedBy = "register", fetch = FetchType.LAZY)
     private Set<Certificate> certificates = new HashSet<>();
 
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "regulation_id", referencedColumnName = "id")
+    private Regulation regulation;
+
+    @OneToOne(mappedBy = "register")
+    private ReceiptExamination receiptExamination;
 }

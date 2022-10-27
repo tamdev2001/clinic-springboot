@@ -57,17 +57,9 @@ public class Certificate implements Serializable {
     @JoinColumn(name = "register_id", nullable = false, referencedColumnName = "id")
     private Register register;
 
-
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = true, referencedColumnName = "id")
     private User user;
 
-    @OneToOne(mappedBy = "certificate")
-    private Receipt receipt;
-
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "regulation_id", referencedColumnName = "id")
-    private Regulations regulation;
 }

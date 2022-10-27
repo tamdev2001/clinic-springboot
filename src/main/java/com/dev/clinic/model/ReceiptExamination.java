@@ -1,4 +1,5 @@
 package com.dev.clinic.model;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -29,8 +30,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "receipt")
-public class Receipt implements Serializable {
+@Table(name = "receipt_examination")
+public class ReceiptExamination implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,10 +48,12 @@ public class Receipt implements Serializable {
     private Boolean isPayment;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Certificate certificate;
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private Register register;
 
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+    
 }

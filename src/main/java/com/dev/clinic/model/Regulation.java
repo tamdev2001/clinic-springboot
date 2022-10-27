@@ -27,8 +27,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "regulations")
-public class Regulations implements Serializable {
+@Table(name = "regulation")
+public class Regulation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,8 +36,8 @@ public class Regulations implements Serializable {
     @Column(name = "patient_quantity")
     private Integer patientQuantity;
 
-    @Column(name = "price_examination")
-    private Double priceExamination;
+    @Column(name = "examination_price")
+    private Double examinationPrice;
 
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -49,5 +49,5 @@ public class Regulations implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "regulation", fetch = FetchType.LAZY)
-    private Set<Certificate> certificates;
+    private Set<Register> registers;
 }
