@@ -32,9 +32,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "receipt_examination")
-public class ReceiptExamination implements Serializable {
-
+@Table(name = "receipt_prescription")
+public class ReceiptPrescription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -52,12 +51,11 @@ public class ReceiptExamination implements Serializable {
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Register register;
+    private Prescription prescription;
 
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    
 }
