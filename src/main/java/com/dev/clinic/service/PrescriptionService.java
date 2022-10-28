@@ -24,4 +24,6 @@ public interface PrescriptionService {
 
     List<PrescriptionMedicine> getPrescriptionDetails(long prescriptionId);
 
+    Double totalMedicinePriceOfPrescription(long prescriptionId);
+
 }

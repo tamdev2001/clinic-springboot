@@ -61,12 +61,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/nurses/**").access("hasRole('ROLE_NURSE')")
                 .antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll();
-        // .antMatchers("/api/**").permitAll()
         // .antMatchers(HttpMethod.GET, "/api/**").permitAll();
         // .antMatchers("/api/auth/**").permitAll()
         // .anyRequest()
         // .authenticated()
         // .and()
         // .httpBasic();
+
+        http.addFilterBefore(
+            authenticationJwtTokenFilter(),
+            UsernamePasswordAuthenticationFilter.class
+        );
     }
 }

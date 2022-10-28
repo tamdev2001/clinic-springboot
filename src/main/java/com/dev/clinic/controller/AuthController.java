@@ -98,7 +98,7 @@ public class AuthController {
             user.setPhone(phone);
             user.setComfirmPassword(comfirmPassword);
         } catch (IOException ex) {
-            throw new NotFoundException("anh loi nhe");
+            throw new NotFoundException("Image upload failed!");
         }
         UserDto newUser = this.userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);

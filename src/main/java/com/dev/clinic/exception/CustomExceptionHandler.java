@@ -33,4 +33,10 @@ public class CustomExceptionHandler {
         return new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
+    @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ErrorResponse handlerAlreadyExistsException(AlreadyExistsException ex, WebRequest req) {
+        return new ErrorResponse(HttpStatus.ALREADY_REPORTED, ex.getMessage());
+    }
+
 }

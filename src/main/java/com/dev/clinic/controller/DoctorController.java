@@ -20,9 +20,11 @@ import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Medicine;
 import com.dev.clinic.model.Prescription;
 import com.dev.clinic.model.PrescriptionMedicine;
+import com.dev.clinic.model.Register;
 import com.dev.clinic.service.CertificateService;
 import com.dev.clinic.service.MedicineService;
 import com.dev.clinic.service.PrescriptionService;
+import com.dev.clinic.service.RegisterService;
 
 @CrossOrigin
 @RestController
@@ -38,11 +40,24 @@ public class DoctorController {
     @Autowired
     private MedicineService medicineService;
 
+    @Autowired
+    private RegisterService registerService;
+
     // #region certificate
     @GetMapping("/certificates/{id}")
     public ResponseEntity<Certificate> getCertificateById(@PathVariable long id) {
         Certificate certificate = this.certificateService.getCetificateById(id);
         return ResponseEntity.ok(certificate);
+    }
+
+    @GetMapping("/registers")
+    public ResponseEntity<List<Register>> getRegisters(@RequestParam(required = false, defaultValue = "") String name,
+            @RequestParam(required = false, defaultValue = "") String phone,
+            @RequestParam(required = false, defaultValue = "") Boolean verified,
+            @RequestParam(required = false, defaultValue = "") String examinationTime,
+            @RequestParam(required = false, defaultValue = "") String createdDate) {
+        List<Register> registers = registerService.getRegisters(name, phone, true, examinationTime, createdDate);
+        return ResponseEntity.ok(registers);
     }
 
     @GetMapping("/registers/{registerId}/certificates")
@@ -127,14 +142,14 @@ public class DoctorController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("prescriptions/{prescriptionId}/details") 
+    @GetMapping("prescriptions/{prescriptionId}/details")
     public ResponseEntity<?> getPrescriptionDetailsByPrescriptionId(@PathVariable long prescriptionId) {
         List<PrescriptionMedicine> pds = this.prescriptionService.getPrescriptionDetails(prescriptionId);
 
         return ResponseEntity.ok(pds);
     }
 
-    @GetMapping("medicines") 
+    @GetMapping("medicines")
     public ResponseEntity<List<Medicine>> getMedicines(@RequestParam(required = false, defaultValue = "") String name) {
         List<Medicine> medicines = this.medicineService.getMedicines(name);
         return ResponseEntity.ok(medicines);

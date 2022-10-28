@@ -6,4 +6,6 @@ import com.dev.clinic.model.ReceiptExamination;
 
 public interface ReceiptExaminationRepository extends JpaRepository<ReceiptExamination, Long> {
 
+    boolean existsByRegisterId(long registerId);
+    
 }

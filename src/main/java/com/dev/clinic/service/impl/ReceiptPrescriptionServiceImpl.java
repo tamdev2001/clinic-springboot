@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dev.clinic.exception.BadRequestException;
 import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.Prescription;
 import com.dev.clinic.model.ReceiptPrescription;
@@ -28,11 +29,17 @@ public class ReceiptPrescriptionServiceImpl implements ReceiptPrescriptionServic
 
     @Override
     public ReceiptPrescription createReceiptPrescription(ReceiptPrescription receiptPrescription, long prescriptionId) {
+        if (this.receiptPrescriptionRepository.existsByPrescriptionId(prescriptionId)) {
+            throw new BadRequestException("Preciption has paid!");
+        }
+
         Prescription prescription = this.prescriptionService.getPrescriptionById(prescriptionId);
         User user = this.userService.getCurrentUser();
+        double totalPrice =this.prescriptionService.totalMedicinePriceOfPrescription(prescriptionId);
 
         receiptPrescription.setPrescription(prescription);
         receiptPrescription.setUser(user);
+        receiptPrescription.setPriceTotal(totalPrice);
 
         return this.receiptPrescriptionRepository.save(receiptPrescription);
     }
