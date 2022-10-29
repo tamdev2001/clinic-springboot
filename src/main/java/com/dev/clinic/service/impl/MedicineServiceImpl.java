@@ -36,4 +36,34 @@ public class MedicineServiceImpl implements MedicineService {
         return medicines;
     }
 
+    @Override
+    public Medicine createMedicine(Medicine medicine) {
+        Medicine newMedicine = this.medicineRepository.save(medicine);
+
+        return newMedicine;
+    }
+
+    @Override
+    public Boolean deleteMedicine(long id) {
+        if (this.medicineRepository.existsById(id)) {
+            this.medicineRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Medicine updateMedicine(long id, Medicine medicine) {
+        Optional<Medicine> cOptional = this.medicineRepository.findById(id);
+        if (cOptional.isPresent()) {
+            Medicine existedMedicine = cOptional.get();
+            medicine.setId(existedMedicine.getId());
+
+            Medicine updatedMedicine = this.medicineRepository.save(medicine);
+
+            return updatedMedicine;
+        }
+
+        throw new NotFoundException("Medicine does not exist!");
+    }
 }

@@ -51,9 +51,9 @@ public class Certificate implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    @JsonIgnore
+    // @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "register_id", nullable = false, referencedColumnName = "id")
     private Register register;
 

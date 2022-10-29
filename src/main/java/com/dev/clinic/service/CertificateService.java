@@ -15,4 +15,12 @@ public interface CertificateService {
 
     Boolean deleteCertifcate(long certificateId);
 
+    List<Certificate> getCertificates();
+
+    Certificate createACertificate(Certificate certificate);
+
+    Certificate updateACertificate(long certificateId, Certificate certificate);
+
+    
+
 }
