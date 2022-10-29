@@ -50,6 +50,7 @@ public class DoctorController {
         return ResponseEntity.ok(certificate);
     }
 
+    @CrossOrigin
     @GetMapping("/registers")
     public ResponseEntity<List<Register>> getRegisters(@RequestParam(required = false, defaultValue = "") String name,
             @RequestParam(required = false, defaultValue = "") String phone,
