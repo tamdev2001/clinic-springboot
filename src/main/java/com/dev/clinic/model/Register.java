@@ -83,7 +83,6 @@ public class Register implements Serializable {
     @OneToMany(mappedBy = "register", fetch = FetchType.LAZY)
     private Set<Certificate> certificates = new HashSet<>();
 
-    @JsonIgnore
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "regulation_id", referencedColumnName = "id")

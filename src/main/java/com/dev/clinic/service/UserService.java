@@ -6,6 +6,7 @@ import java.util.Set;
 import com.dev.clinic.dto.UserDto;
 import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Register;
+import com.dev.clinic.model.Role;
 import com.dev.clinic.model.User;
 
 public interface UserService {
@@ -29,4 +30,10 @@ public interface UserService {
     Set<Register> getRegistersByCurrentUser();
 
     User getCurrentUser();
+
+    List<UserDto> getUsers();
+
+    UserDto createAUser(User user);
+
+    User updateAUser(long id, User user, List<Role> role);
 }
