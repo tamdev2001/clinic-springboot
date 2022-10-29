@@ -1,6 +1,8 @@
 package com.dev.clinic.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -87,6 +89,7 @@ public class UserServiceImpl implements UserService {
 
         Role role = rOptional.get();
         user.addRole(role);
+        user.setCreatedDate(new Date());
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
         User newUser = this.userRepository.save(user);
@@ -193,6 +196,63 @@ public class UserServiceImpl implements UserService {
             return registers;
         }
         throw new NotFoundException("User does not have any registers!");
+    }
+
+    @Override
+    public List<UserDto> getUsers() {
+        List<User> users = this.userRepository.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            userDtos.add(modelMapper.map(user, UserDto.class));
+        }
+
+        if (userDtos.isEmpty()) {
+            throw new NotFoundException("No user exist!");
+        }
+
+        return userDtos;
+    }
+
+    @Override
+    public UserDto createAUser(User user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new BadRequestException("Username is already taken!");
+        }
+        if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+            throw new BadRequestException("Username and password are required!");
+        }
+        if (!user.getPassword().equals(user.getComfirmPassword())) {
+            throw new BadRequestException("Password and confirmation password do not match!");
+        }
+        user.setCreatedDate(new Date());
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+
+        User newUser = this.userRepository.save(user);
+
+        UserDto userDto = modelMapper.map(newUser, UserDto.class);
+
+        return userDto;
+    }
+
+    @Override
+    public User updateAUser(long id, User user, List<Role> roles) {
+        Optional<User> uOptional = this.userRepository.findById(id);
+        if (uOptional.isPresent()) {
+            
+            user.setId(id);
+            for (Role role : roles) {
+                user.addRole(role);
+            }
+            if(user.getPassword() != uOptional.get().getPassword()) {
+                user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+            }
+
+            User updateUser = this.userRepository.save(user);
+
+            return updateUser;
+        }
+
+        throw new NotFoundException("User does not exist!");
     }
 
 }

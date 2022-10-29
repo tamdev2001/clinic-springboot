@@ -43,7 +43,6 @@ public class Regulation implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate = new Date();
 
-    @JsonIgnore
     @Column
     private Boolean active = true;
 

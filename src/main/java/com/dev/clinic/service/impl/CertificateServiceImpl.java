@@ -103,4 +103,35 @@ public class CertificateServiceImpl implements CertificateService {
         throw new NotFoundException("Register " + registerId + " does not have any Certification!");
     }
 
+    @Override
+    public List<Certificate> getCertificates() {
+        List<Certificate> certificates = this.certificateRepository.findAll();
+        
+        return certificates;
+    }
+
+    @Override
+    public Certificate createACertificate(Certificate certificate) {
+        certificate.setCreatedDate(new Date());
+        Certificate newCertificate = this.certificateRepository.save(certificate);
+        
+        return newCertificate;
+    }
+
+    @Override
+    public Certificate updateACertificate(long certificateId, Certificate certificate) {
+        
+        Optional<Certificate> cOptional = this.certificateRepository.findById(certificateId);
+        if (cOptional.isPresent()) {
+            Certificate existedCer = cOptional.get();
+            certificate.setId(existedCer.getId());
+
+            Certificate updatedCertificate = this.certificateRepository.save(certificate);
+
+            return updatedCertificate;
+        }
+
+        throw new NotFoundException("Certificate does not exist!");
+    }
+
 }
