@@ -29,14 +29,11 @@ import com.dev.clinic.model.Role;
 import com.dev.clinic.model.Unit;
 import com.dev.clinic.model.User;
 import com.dev.clinic.repository.RoleRepository;
-import com.dev.clinic.repository.UserRepository;
 import com.dev.clinic.service.CertificateService;
 import com.dev.clinic.service.MedicineService;
 import com.dev.clinic.service.RegulationService;
 import com.dev.clinic.service.UnitService;
 import com.dev.clinic.service.UserService;
-
-import net.bytebuddy.dynamic.loading.PackageDefinitionStrategy.Definition.Undefined;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -45,29 +42,36 @@ import com.cloudinary.utils.ObjectUtils;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
+
     @Autowired
     private MedicineService medicineService;
+
     @Autowired
     private CertificateService certificateService;
+
     @Autowired
     private UnitService unitService;
+
     @Autowired
     private RegulationService regulationService;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
     private Cloudinary cloudinary;
 
-    //User
-    @GetMapping("users") 
+    // #region user
+    @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUsers() {
         List<UserDto> users = this.userService.getUsers();
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("users")
+    @PostMapping("/users")
     public ResponseEntity<?> createUser(@RequestParam("file") MultipartFile file,
             @RequestParam("username") String username,
             @RequestParam("password") String password,
@@ -134,7 +138,7 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
-    @DeleteMapping("users/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Boolean> deleteUser(@PathVariable long id) {
         if (this.userService.deleteUser(id)) {
             return ResponseEntity.ok(true);
@@ -142,35 +146,35 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
     }
 
-    @PutMapping("users/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable long id,
             @RequestBody User user, @RequestBody List<Role> roles) {
         User updaUser = this.userService.updateAUser(id, user, roles);
 
         return ResponseEntity.ok(updaUser);
     }
+    // #endregion
 
-    //Medicine
-    @GetMapping("medicines") 
+    // #region medicines
+    @GetMapping("/medicines")
     public ResponseEntity<List<Medicine>> getMedicines(@RequestParam(required = false, defaultValue = "") String name) {
         List<Medicine> medicines = this.medicineService.getMedicines(name);
         return ResponseEntity.ok(medicines);
     }
 
-    @PostMapping("medicines")
+    @PostMapping("/medicines")
     public ResponseEntity<Medicine> createMedicine(@RequestBody Medicine medicine) {
         try {
             Medicine newMedicine = this.medicineService.createMedicine(medicine);
             return ResponseEntity.status(HttpStatus.CREATED).body(newMedicine);
-            
+
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("medicines/{id}")
+    @DeleteMapping("/medicines/{id}")
     public ResponseEntity<Boolean> deleteMedicine(@PathVariable long id) {
         if (this.medicineService.deleteMedicine(id)) {
             return ResponseEntity.ok(true);
@@ -178,35 +182,35 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
     }
 
-    @PutMapping("medicines/{id}")
+    @PutMapping("/medicines/{id}")
     public ResponseEntity<Medicine> updateMedicine(@PathVariable long id,
             @RequestBody Medicine medicine) {
         Medicine updaMedicine = this.medicineService.updateMedicine(id, medicine);
 
         return ResponseEntity.ok(updaMedicine);
     }
+    // #endregion
 
-    //Certificate
-    @GetMapping("certificates") 
+    // #region certificates
+    @GetMapping("/certificates")
     public ResponseEntity<List<Certificate>> getCertificates() {
         List<Certificate> certificates = this.certificateService.getCertificates();
         return ResponseEntity.ok(certificates);
     }
 
-    @PostMapping("certificates")
+    @PostMapping("/certificates")
     public ResponseEntity<Certificate> createCertificate(@RequestBody Certificate certificate) {
         try {
             Certificate newCertificate = this.certificateService.createACertificate(certificate);
             return ResponseEntity.status(HttpStatus.CREATED).body(newCertificate);
-            
+
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("certificates/{id}")
+    @DeleteMapping("/certificates/{id}")
     public ResponseEntity<Boolean> deleteCertificates(@PathVariable long id) {
         if (this.certificateService.deleteCertifcate(id)) {
             return ResponseEntity.ok(true);
@@ -214,35 +218,35 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
     }
 
-    @PutMapping("certificates/{id}")
+    @PutMapping("/certificates/{id}")
     public ResponseEntity<Certificate> updateCertificate(@PathVariable long id,
             @RequestBody Certificate certificate) {
         Certificate updaCertificate = this.certificateService.updateACertificate(id, certificate);
 
         return ResponseEntity.ok(updaCertificate);
     }
+    // #endregion
 
-    //Unit
-    @GetMapping("units") 
+    // #region units
+    @GetMapping("/units")
     public ResponseEntity<List<Unit>> getUnits(@RequestParam(required = false, defaultValue = "") String name) {
         List<Unit> units = this.unitService.getUnits(name);
         return ResponseEntity.ok(units);
     }
 
-    @PostMapping("units")
+    @PostMapping("/units")
     public ResponseEntity<Unit> createUnit(@RequestBody Unit unit) {
         try {
             Unit newUnit = this.unitService.createUnit(unit);
             return ResponseEntity.status(HttpStatus.CREATED).body(newUnit);
-            
+
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("units/{id}")
+    @DeleteMapping("/units/{id}")
     public ResponseEntity<Boolean> deleteUnit(@PathVariable int id) {
         if (this.unitService.deleteUnit(id)) {
             return ResponseEntity.ok(true);
@@ -250,35 +254,35 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
     }
 
-    @PutMapping("units/{id}")
+    @PutMapping("/units/{id}")
     public ResponseEntity<Unit> updateUnit(@PathVariable int id,
             @RequestBody Unit Unit) {
         Unit updaUnit = this.unitService.updateUnit(id, Unit);
 
         return ResponseEntity.ok(updaUnit);
     }
+    // #endregion
 
-    //Regulation
-    @GetMapping("regulations") 
+    // #region regulations
+    @GetMapping("/regulations")
     public ResponseEntity<List<Regulation>> getRegulations() {
         List<Regulation> Regulations = this.regulationService.getRegulations();
         return ResponseEntity.ok(Regulations);
     }
 
-    @PostMapping("regulations")
+    @PostMapping("/regulations")
     public ResponseEntity<Regulation> createRegulation(@RequestBody Regulation regulation) {
         try {
             Regulation newRegulation = this.regulationService.createRegulation(regulation);
             return ResponseEntity.status(HttpStatus.CREATED).body(newRegulation);
-            
+
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("regulations/{id}")
+    @DeleteMapping("/regulations/{id}")
     public ResponseEntity<Boolean> deleteRegulation(@PathVariable Long id) {
         if (this.regulationService.deleteRegulation(id)) {
             return ResponseEntity.ok(true);
@@ -286,11 +290,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
     }
 
-    @PutMapping("regulations/{id}")
+    @PutMapping("/regulations/{id}")
     public ResponseEntity<Regulation> updateRegulation(@PathVariable Long id,
             @RequestBody Regulation regulation) {
         Regulation updaRegulation = this.regulationService.updateRegulation(id, regulation);
 
         return ResponseEntity.ok(updaRegulation);
     }
+    // #endregion
 }
