@@ -76,7 +76,7 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newCertificate);
     }
 
-    @PutMapping("certificates/{certificateId}")
+    @PutMapping("/certificates/{certificateId}")
     public ResponseEntity<Certificate> updateCertificate(@PathVariable long certificateId,
             @RequestBody Certificate certificate) {
         Certificate updatedCertificate = this.certificateService.updateCertificate(certificateId, certificate);
@@ -84,7 +84,7 @@ public class DoctorController {
         return ResponseEntity.ok(updatedCertificate);
     }
 
-    @DeleteMapping("certificates/{certificateId}")
+    @DeleteMapping("/certificates/{certificateId}")
     public ResponseEntity<Boolean> deleteCertificate(@PathVariable long certificateId) {
         boolean result = this.certificateService.deleteCertifcate(certificateId);
         return ResponseEntity.ok(result);
@@ -92,7 +92,7 @@ public class DoctorController {
     // #endregion
 
     // #region precription
-    @PostMapping("certificates/{certificateId}/prescriptions")
+    @PostMapping("/certificates/{certificateId}/prescriptions")
     public ResponseEntity<Prescription> createPrescription(@PathVariable long certificateId,
             Prescription prescription) {
         Prescription newPrescription = this.prescriptionService.createPrescription(certificateId, prescription);
@@ -100,20 +100,20 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newPrescription);
     }
 
-    @GetMapping("prescriptions/{id}")
+    @GetMapping("/prescriptions/{id}")
     public ResponseEntity<Prescription> getPrescriptionById(@PathVariable long id) {
         Prescription prescription = this.prescriptionService.getPrescriptionById(id);
         return ResponseEntity.ok(prescription);
     }
 
-    @GetMapping("certificates/{certificateId}/prescriptions")
+    @GetMapping("/certificates/{certificateId}/prescriptions")
     public ResponseEntity<List<Prescription>> getPrescriptionsByCertificateId(@PathVariable long certificateId) {
         List<Prescription> prescriptions = this.prescriptionService.getPrescriptionsByCertificateId(certificateId);
 
         return ResponseEntity.ok(prescriptions);
     }
 
-    @PutMapping("prescriptions/{id}")
+    @PutMapping("/prescriptions/{id}")
     public ResponseEntity<Prescription> updatePrescription(@PathVariable long id,
             @RequestBody Prescription prescription) {
         Prescription updaPrescription = this.prescriptionService.updatePrescription(id, prescription);
@@ -121,13 +121,13 @@ public class DoctorController {
         return ResponseEntity.ok(updaPrescription);
     }
 
-    @DeleteMapping("prescriptions/{id}")
+    @DeleteMapping("/prescriptions/{id}")
     public ResponseEntity<Boolean> deletePrescription(@PathVariable long id) {
         boolean result = this.prescriptionService.deletePrescription(id);
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("prescriptions/{prescriptionId}/medicines/{medicineId}")
+    @PostMapping("/prescriptions/{prescriptionId}/medicines/{medicineId}")
     public ResponseEntity<Medicine> addMedicineToPresciption(@PathVariable long prescriptionId,
             @PathVariable long medicineId, @RequestParam(required = false) Integer quantity) {
 
@@ -136,21 +136,21 @@ public class DoctorController {
 
     }
 
-    @DeleteMapping("prescriptions/{prescriptionId}/medicines/{medicineId}")
+    @DeleteMapping("/prescriptions/{prescriptionId}/medicines/{medicineId}")
     public ResponseEntity<Boolean> removeMedicineFromPresciption(@PathVariable long prescriptionId,
             @PathVariable long medicineId) {
         boolean result = this.prescriptionService.reoveMedicineFromPresciption(medicineId, prescriptionId);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("prescriptions/{prescriptionId}/details")
+    @GetMapping("/prescriptions/{prescriptionId}/details")
     public ResponseEntity<?> getPrescriptionDetailsByPrescriptionId(@PathVariable long prescriptionId) {
         List<PrescriptionMedicine> pds = this.prescriptionService.getPrescriptionDetails(prescriptionId);
 
         return ResponseEntity.ok(pds);
     }
 
-    @GetMapping("medicines")
+    @GetMapping("/medicines")
     public ResponseEntity<List<Medicine>> getMedicines(@RequestParam(required = false, defaultValue = "") String name) {
         List<Medicine> medicines = this.medicineService.getMedicines(name);
         return ResponseEntity.ok(medicines);
