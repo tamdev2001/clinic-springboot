@@ -1,9 +1,5 @@
 package com.dev.clinic.dto;
 
-import java.util.Set;
-
-import com.dev.clinic.model.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +20,5 @@ public class UserDto {
     private String username;
     private String avatar;
     private String password;
+    
 }
-
