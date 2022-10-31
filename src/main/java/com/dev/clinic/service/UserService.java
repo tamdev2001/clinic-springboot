@@ -31,6 +31,8 @@ public interface UserService {
 
     User getCurrentUser();
 
+    User getCurrentUserOrNull();
+
     List<UserDto> getUsers();
 
     UserDto createAUser(User user);

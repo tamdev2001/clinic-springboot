@@ -64,7 +64,11 @@ public class PresciptionServiceImpl implements PrescriptionService {
     public Boolean deletePrescription(long id) {
         boolean isExistPre = this.prescriptionRepository.existsById(id);
         if (isExistPre) {
-            this.prescriptionRepository.deleteById(id);
+            try {
+                this.prescriptionRepository.deleteByPreId(id);
+            } catch (Exception ex) {
+                throw new InternalException("khong duoc xoa");
+            }
             return true;
         }
         throw new NotFoundException("Prescription does not exist!");

@@ -10,4 +10,10 @@ public interface ReceiptExaminationService {
 
     List<ReceiptExamination> getReceiptExaminations();
 
+    ReceiptExamination updateReceiptExamination(long receiptId, ReceiptExamination receiptExamination);
+
+    Boolean deleteReceiptExamination(long receiptId);
+
+    ReceiptExamination getReceiptById(long id);
+
 }

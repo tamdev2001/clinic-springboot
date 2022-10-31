@@ -177,6 +177,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getCurrentUserOrNull() {
+        String currentUsername = CommonMethod.getCurrentUsername();
+        if (currentUsername != null) {
+            Optional<User> uOptional = this.userRepository.findByUsername(currentUsername);
+            if (uOptional.isPresent()) {
+                return uOptional.get();
+            }
+            throw new NotFoundException("Username " + currentUsername + " does not exist!");
+        }
+        
+        return null;
+    }
+
+    @Override
     public Set<Certificate> getCertificatesByCurrentUser() {
         User user = this.getCurrentUser();
         Set<Certificate> certificates = user.getCertificates();
