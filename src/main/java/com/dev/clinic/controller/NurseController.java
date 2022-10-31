@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dev.clinic.model.Prescription;
 import com.dev.clinic.model.Register;
 import com.dev.clinic.service.EmailService;
+import com.dev.clinic.service.PrescriptionService;
 import com.dev.clinic.service.RegisterService;
 
 @CrossOrigin
@@ -30,6 +32,9 @@ public class NurseController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PrescriptionService prescriptionService;
 
     @GetMapping("/registers")
     public ResponseEntity<List<Register>> getRegisters(@RequestParam(required = false, defaultValue = "") String name,
@@ -53,6 +58,18 @@ public class NurseController {
         }
 
         return ResponseEntity.ok(register);
+    }
+
+    @GetMapping("/prescriptions/{id}")
+    public ResponseEntity<Prescription> getPrescriptionById(@PathVariable long id) {
+        Prescription prescription = this.prescriptionService.getPrescriptionById(id);
+        return ResponseEntity.ok(prescription);
+    }
+
+    @GetMapping("/prescriptions")
+    public ResponseEntity<List<Prescription>> getPrescriptionById() {
+        List<Prescription> prescriptions = this.prescriptionService.getPrescriptions();
+        return ResponseEntity.ok(prescriptions);
     }
 
 }

@@ -100,11 +100,8 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newPrescription);
     }
 
-    @GetMapping("/prescriptions/{id}")
-    public ResponseEntity<Prescription> getPrescriptionById(@PathVariable long id) {
-        Prescription prescription = this.prescriptionService.getPrescriptionById(id);
-        return ResponseEntity.ok(prescription);
-    }
+    
+    
 
     @GetMapping("/certificates/{certificateId}/prescriptions")
     public ResponseEntity<List<Prescription>> getPrescriptionsByCertificateId(@PathVariable long certificateId) {

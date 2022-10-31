@@ -155,4 +155,14 @@ public class PresciptionServiceImpl implements PrescriptionService {
         return totalPrice;
     }
 
+    @Override
+    public List<Prescription> getPrescriptions() {
+        List<Prescription> prescriptions = this.prescriptionRepository.findAll();
+        if (prescriptions.isEmpty()) {
+            throw new NotFoundException("Does not have any prescriptions!");
+        }
+
+        return prescriptions;
+    }
+
 }
