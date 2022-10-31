@@ -80,7 +80,7 @@ public class Register implements Serializable {
     private User user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "register", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "register", fetch = FetchType.EAGER)
     private Set<Certificate> certificates = new HashSet<>();
 
     @OnDelete(action = OnDeleteAction.NO_ACTION)

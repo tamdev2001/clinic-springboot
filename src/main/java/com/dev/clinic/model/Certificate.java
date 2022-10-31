@@ -20,6 +20,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonSerialize
 @Entity
 @Table(name = "certificate")
 public class Certificate implements Serializable {
@@ -50,8 +52,7 @@ public class Certificate implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    // @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "register_id", nullable = false, referencedColumnName = "id")
     private Register register;

@@ -1,6 +1,7 @@
 package com.dev.clinic.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,9 +62,16 @@ public class DoctorController {
         return ResponseEntity.ok(registers);
     }
 
+    @GetMapping("/certificates")
+    public ResponseEntity<List<Certificate>> getCertificates() {
+        List<Certificate> certificates = this.certificateService.getCertificates();
+
+        return ResponseEntity.ok(certificates);
+    }
+
     @GetMapping("/registers/{registerId}/certificates")
-    public ResponseEntity<List<Certificate>> getCertificatesByRegisterId(@PathVariable long registerId) {
-        List<Certificate> certificates = this.certificateService.getCertificatesByRegisterId(registerId);
+    public ResponseEntity<Set<Certificate>> getCertificatesByRegisterId(@PathVariable long registerId) {
+        Set<Certificate> certificates = this.certificateService.getCertificatesByRegisterId(registerId);
 
         return ResponseEntity.ok(certificates);
     }
@@ -100,8 +108,11 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newPrescription);
     }
 
-    
-    
+    @GetMapping("/prescriptions/{id}")
+    public ResponseEntity<Prescription> getPrescriptionById(@PathVariable long id) {
+        Prescription prescription = this.prescriptionService.getPrescriptionById(id);
+        return ResponseEntity.ok(prescription);
+    }
 
     @GetMapping("/certificates/{certificateId}/prescriptions")
     public ResponseEntity<List<Prescription>> getPrescriptionsByCertificateId(@PathVariable long certificateId) {

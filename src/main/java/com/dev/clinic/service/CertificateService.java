@@ -1,13 +1,15 @@
 package com.dev.clinic.service;
 
 import java.util.List;
+import java.util.Set;
+
 import com.dev.clinic.model.Certificate;
 
 public interface CertificateService {
 
     Certificate getCetificateById(long certificateId);
 
-    List<Certificate> getCertificatesByRegisterId(long registerId);
+    Set<Certificate> getCertificatesByRegisterId(long registerId);
 
     Certificate createCertificate(long registerId, Certificate certificate);
 
