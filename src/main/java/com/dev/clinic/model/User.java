@@ -76,7 +76,7 @@ public class User implements Serializable {
     private String password;
 
     @Column
-    private Boolean actived = true;
+    private Boolean active = true;
 
     @Size(max = 255)
     @Column
