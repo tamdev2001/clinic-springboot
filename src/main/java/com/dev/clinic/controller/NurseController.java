@@ -51,11 +51,11 @@ public class NurseController {
             throws AddressException, MessagingException, IOException {
         Register register = this.registerService.verifiedRegister(id);
 
-        if (!register.getEmail().isEmpty()) {
-            this.emailService.sendEmail(register.getEmail(), "Appointment at Clinica",
-                    "Hello guys! You have made an appointment at Clinica on " + register.getExaminationTime()
-                            + " please arrive on time!");
-        }
+        // if (!register.getEmail().isEmpty()) {
+        //     this.emailService.sendEmail(register.getEmail(), "Appointment at Clinica",
+        //             "Hello guys! You have made an appointment at Clinica on " + register.getExaminationTime()
+        //                     + " please arrive on time!");
+        // }
 
         return ResponseEntity.ok(register);
     }
