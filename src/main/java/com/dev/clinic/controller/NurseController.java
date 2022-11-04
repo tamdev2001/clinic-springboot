@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.clinic.model.Prescription;
 import com.dev.clinic.model.Register;
-import com.dev.clinic.service.EmailService;
+// import com.dev.clinic.service.EmailService;
 import com.dev.clinic.service.PrescriptionService;
 import com.dev.clinic.service.RegisterService;
 
@@ -30,8 +30,8 @@ public class NurseController {
     @Autowired
     private RegisterService registerService;
 
-    @Autowired
-    private EmailService emailService;
+    // @Autowired
+    // private EmailService emailService;
 
     @Autowired
     private PrescriptionService prescriptionService;
