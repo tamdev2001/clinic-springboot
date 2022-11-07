@@ -3,6 +3,7 @@ package com.dev.clinic.service.impl;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,17 +88,11 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public List<Certificate> getCertificatesByRegisterId(long registerId) {
-        boolean existRegistered = this.registerRepository.existsById(registerId);
+    public Set<Certificate> getCertificatesByRegisterId(long registerId) {
+        Optional<Register> rOptional = this.registerRepository.findById(registerId);
 
-        if (!existRegistered) {
-            throw new NotFoundException("Register does not exist!");
-        }
-
-        List<Certificate> certificates = this.certificateRepository.findByRegisterId(registerId);
-
-        if (!certificates.isEmpty()) {
-            return certificates;
+        if (rOptional.isPresent()) {
+            return rOptional.get().getCertificates();
         }
 
         throw new NotFoundException("Register " + registerId + " does not have any Certification!");

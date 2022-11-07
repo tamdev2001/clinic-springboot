@@ -42,12 +42,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // @PostMapping
-    // public ResponseEntity<UserDto> createUser(@RequestBody User user) {
-    //     UserDto newUser = this.userService.createUser(user);
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-    // }
-
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable long id, @RequestBody User user) {
         UserDto updateUser = this.userService.updateUser(id, user);
@@ -60,25 +54,25 @@ public class UserController {
         return ResponseEntity.ok(isDeleted);
     }
 
-    @GetMapping("{id}/registers")
+    @GetMapping("/{id}/registers")
     public ResponseEntity<Set<Register>> getRegistersByUserId(@PathVariable long id) {
         Set<Register> registers = this.userService.getRegistersByUserId(id);
         return ResponseEntity.ok(registers);
     }
 
-    @GetMapping("{id}/certificates")
+    @GetMapping("/{id}/certificates")
     public ResponseEntity<Set<Certificate>> getCertificatesByUserId(@PathVariable Long id) {
         Set<Certificate> certificates = this.userService.getCertificatesByUserId(id);
         return ResponseEntity.ok(certificates);
     }
 
-    @GetMapping("certificates")
+    @GetMapping("/certificates")
     public ResponseEntity<Set<Certificate>> getCertificatesByCurrentUser() {
         Set<Certificate> certificates = this.userService.getCertificatesByCurrentUser();
         return ResponseEntity.ok(certificates);
     }
 
-    @GetMapping("registers")
+    @GetMapping("/registers")
     public ResponseEntity<Set<Register>> getRegistersByCurrentUser() {
         Set<Register> registers = this.userService.getRegistersByCurrentUser();
         return ResponseEntity.ok(registers);

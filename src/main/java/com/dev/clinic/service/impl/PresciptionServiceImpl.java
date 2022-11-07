@@ -64,7 +64,11 @@ public class PresciptionServiceImpl implements PrescriptionService {
     public Boolean deletePrescription(long id) {
         boolean isExistPre = this.prescriptionRepository.existsById(id);
         if (isExistPre) {
-            this.prescriptionRepository.deleteById(id);
+            try {
+                this.prescriptionRepository.deleteByPreId(id);
+            } catch (Exception ex) {
+                throw new InternalException("khong duoc xoa");
+            }
             return true;
         }
         throw new NotFoundException("Prescription does not exist!");
@@ -142,6 +146,23 @@ public class PresciptionServiceImpl implements PrescriptionService {
         }
 
         return pds;
+    }
+
+    @Override
+    public Double totalMedicinePriceOfPrescription(long prescriptionId) {
+        double totalPrice = this.getPrescriptionDetails(prescriptionId).stream().reduce(0.0, (total, element) -> total + (element.getQuantity() * element.getMedicine().getPrice()), Double::sum);
+
+        return totalPrice;
+    }
+
+    @Override
+    public List<Prescription> getPrescriptions() {
+        List<Prescription> prescriptions = this.prescriptionRepository.findAll();
+        if (prescriptions.isEmpty()) {
+            throw new NotFoundException("Does not have any prescriptions!");
+        }
+
+        return prescriptions;
     }
 
 }

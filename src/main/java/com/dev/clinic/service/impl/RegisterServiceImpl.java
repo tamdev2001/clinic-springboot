@@ -114,8 +114,10 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public Register updateRegister(long id, Register register) {
         Optional<Register> rOptional = this.registerRepository.findById(id);
+        User currentUser = this.userService.getCurrentUserOrNull();
         if (rOptional.isPresent()) {
             register.setId(id);
+            register.setUser(currentUser);
             return this.registerRepository.save(register);
         }
         return null;

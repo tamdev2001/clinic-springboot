@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/doctors/**").access("hasRole('ROLE_DOCTOR')")
@@ -68,5 +68,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // .authenticated()
         // .and()
         // .httpBasic();
+
+        http.addFilterBefore(
+            authenticationJwtTokenFilter(),
+            UsernamePasswordAuthenticationFilter.class
+        );
     }
 }

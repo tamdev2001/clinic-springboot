@@ -2,8 +2,6 @@ package com.dev.clinic.controller;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.clinic.payload.response.JwtResponse;
-import com.dev.clinic.repository.RoleRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.dev.clinic.dto.LoginDto;
 import com.dev.clinic.dto.UserDto;
 import com.dev.clinic.exception.NotFoundException;
-import com.dev.clinic.model.Role;
 import com.dev.clinic.model.User;
 import com.dev.clinic.security.jwt.JwtUtils;
 import com.dev.clinic.security.services.UserDetailsImpl;
@@ -102,7 +98,7 @@ public class AuthController {
             user.setPhone(phone);
             user.setComfirmPassword(comfirmPassword);
         } catch (IOException ex) {
-            throw new NotFoundException("anh loi nhe");
+            throw new NotFoundException("Image upload failed!");
         }
         UserDto newUser = this.userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);

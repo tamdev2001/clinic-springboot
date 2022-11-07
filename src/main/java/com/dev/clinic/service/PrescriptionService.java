@@ -12,6 +12,8 @@ public interface PrescriptionService {
 
     Prescription getPrescriptionById(long id);
 
+    List<Prescription> getPrescriptions();
+
     Boolean deletePrescription(long id);
 
     Prescription updatePrescription(long id, Prescription prescription);
@@ -23,5 +25,7 @@ public interface PrescriptionService {
     Boolean reoveMedicineFromPresciption(long medicineId, long prescriptionId);
 
     List<PrescriptionMedicine> getPrescriptionDetails(long prescriptionId);
+
+    Double totalMedicinePriceOfPrescription(long prescriptionId);
 
 }

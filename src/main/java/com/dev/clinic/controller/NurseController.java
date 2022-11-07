@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dev.clinic.model.Prescription;
 import com.dev.clinic.model.Register;
-import com.dev.clinic.service.EmailService;
+// import com.dev.clinic.service.EmailService;
+import com.dev.clinic.service.PrescriptionService;
 import com.dev.clinic.service.RegisterService;
 
 @CrossOrigin
@@ -28,8 +30,11 @@ public class NurseController {
     @Autowired
     private RegisterService registerService;
 
+    // @Autowired
+    // private EmailService emailService;
+
     @Autowired
-    private EmailService emailService;
+    private PrescriptionService prescriptionService;
 
     @GetMapping("/registers")
     public ResponseEntity<List<Register>> getRegisters(@RequestParam(required = false, defaultValue = "") String name,
@@ -46,13 +51,25 @@ public class NurseController {
             throws AddressException, MessagingException, IOException {
         Register register = this.registerService.verifiedRegister(id);
 
-        if (!register.getEmail().isEmpty()) {
-            this.emailService.sendEmail(register.getEmail(), "Appointment at Clinica",
-                    "Hello guys! You have made an appointment at Clinica on " + register.getExaminationTime()
-                            + " please arrive on time!");
-        }
+        // if (!register.getEmail().isEmpty()) {
+        //     this.emailService.sendEmail(register.getEmail(), "Appointment at Clinica",
+        //             "Hello guys! You have made an appointment at Clinica on " + register.getExaminationTime()
+        //                     + " please arrive on time!");
+        // }
 
         return ResponseEntity.ok(register);
+    }
+
+    @GetMapping("/prescriptions/{id}")
+    public ResponseEntity<Prescription> getPrescriptionById(@PathVariable long id) {
+        Prescription prescription = this.prescriptionService.getPrescriptionById(id);
+        return ResponseEntity.ok(prescription);
+    }
+
+    @GetMapping("/prescriptions")
+    public ResponseEntity<List<Prescription>> getPrescriptionById() {
+        List<Prescription> prescriptions = this.prescriptionService.getPrescriptions();
+        return ResponseEntity.ok(prescriptions);
     }
 
 }

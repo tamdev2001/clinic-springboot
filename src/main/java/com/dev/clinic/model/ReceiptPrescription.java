@@ -33,7 +33,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "receipt_prescription")
-public class ReceiptPrescription {
+public class ReceiptPrescription implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
