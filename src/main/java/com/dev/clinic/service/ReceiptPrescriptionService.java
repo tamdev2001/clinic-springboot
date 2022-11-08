@@ -11,7 +11,11 @@ public interface ReceiptPrescriptionService {
     List<ReceiptPrescription> getReceiptPrescriptions();
 
     
+<<<<<<< HEAD
     ReceiptPrescription updateReceiptPrescription(long receiptId, ReceiptPrescription ReceiptPrescription, String voucherCode);
+=======
+    ReceiptPrescription updateReceiptPrescription(long receiptId, ReceiptPrescription ReceiptPrescription);
+>>>>>>> mainv2
 
     Boolean deleteReceiptPrescription(long receiptId);
     
