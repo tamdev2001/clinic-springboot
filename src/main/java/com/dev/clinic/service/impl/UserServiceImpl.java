@@ -2,7 +2,6 @@ package com.dev.clinic.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -172,7 +171,7 @@ public class UserServiceImpl implements UserService {
             }
             throw new NotFoundException("Username " + currentUsername + " does not exist!");
         }
-        
+
         throw new UnauthorizedException("User is not authenticared!");
     }
 
@@ -186,7 +185,7 @@ public class UserServiceImpl implements UserService {
             }
             throw new NotFoundException("Username " + currentUsername + " does not exist!");
         }
-        
+
         return null;
     }
 
@@ -252,12 +251,12 @@ public class UserServiceImpl implements UserService {
     public User updateAUser(long id, User user, List<Role> roles) {
         Optional<User> uOptional = this.userRepository.findById(id);
         if (uOptional.isPresent()) {
-            
+
             user.setId(id);
             for (Role role : roles) {
                 user.addRole(role);
             }
-            if(user.getPassword() != uOptional.get().getPassword()) {
+            if (user.getPassword() != uOptional.get().getPassword()) {
                 user.setPassword(this.passwordEncoder.encode(user.getPassword()));
             }
 

@@ -44,7 +44,6 @@ public class PaymentController {
         ReceiptPrescription receipt = this.receiptPrescriptionService.getReceiptById(id);
         return ResponseEntity.ok(receipt);
     }
-
     @GetMapping("/receipt-examinations")
     public ResponseEntity<List<ReceiptExamination>> getReceiptExaminations() {
         List<ReceiptExamination> receiptExaminations = this.receiptExaminationService.getReceiptExaminations();

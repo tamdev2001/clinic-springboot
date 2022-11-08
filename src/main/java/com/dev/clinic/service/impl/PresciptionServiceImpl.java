@@ -150,7 +150,8 @@ public class PresciptionServiceImpl implements PrescriptionService {
 
     @Override
     public Double totalMedicinePriceOfPrescription(long prescriptionId) {
-        double totalPrice = this.getPrescriptionDetails(prescriptionId).stream().reduce(0.0, (total, element) -> total + (element.getQuantity() * element.getMedicine().getPrice()), Double::sum);
+        double totalPrice = this.getPrescriptionDetails(prescriptionId).stream().reduce(0.0,
+                (total, element) -> total + (element.getQuantity() * element.getMedicine().getPrice()), Double::sum);
 
         return totalPrice;
     }

@@ -2,10 +2,13 @@ package com.dev.clinic.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dev.clinic.exception.BadRequestException;
+import com.dev.clinic.exception.InternalException;
 import com.dev.clinic.exception.BadRequestException;
 import com.dev.clinic.exception.InternalException;
 import com.dev.clinic.exception.NotFoundException;
@@ -137,7 +140,6 @@ public class ReceiptExaminationServiceImpl implements ReceiptExaminationService 
             }
             return true;
         }
-
         throw new NotFoundException("Receipt does not exist!");
     }
 

@@ -47,6 +47,7 @@ public class ReceiptPrescriptionServiceImpl implements ReceiptPrescriptionServic
 
         receiptPrescription.setPrescription(prescription);
         receiptPrescription.setUser(user);
+        receiptPrescription.setPriceTotal(totalPrice);
 
         if (voucherCode.equals("")) {
             receiptPrescription.setPriceTotal(totalPrice);
@@ -130,7 +131,6 @@ public class ReceiptPrescriptionServiceImpl implements ReceiptPrescriptionServic
             } catch (Exception e) {
                 throw new InternalException("Could not delete receipt!");
             }
-
         }
 
         throw new NotFoundException("Receipt does not exists!");
@@ -142,7 +142,6 @@ public class ReceiptPrescriptionServiceImpl implements ReceiptPrescriptionServic
         if (rOptional.isPresent()) {
             return rOptional.get();
         }
-
         throw new NotFoundException("Receipt does not exist!");
     }
 
