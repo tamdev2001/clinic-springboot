@@ -12,7 +12,9 @@ import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.ReceiptExamination;
 import com.dev.clinic.model.Register;
 import com.dev.clinic.model.User;
+import com.dev.clinic.model.Voucher;
 import com.dev.clinic.repository.ReceiptExaminationRepository;
+import com.dev.clinic.repository.VoucherRepository;
 import com.dev.clinic.service.ReceiptExaminationService;
 import com.dev.clinic.service.RegisterService;
 import com.dev.clinic.service.UserService;
@@ -26,11 +28,15 @@ public class ReceiptExaminationServiceImpl implements ReceiptExaminationService 
     @Autowired
     private RegisterService registerService;
 
-    @Autowired 
+    @Autowired
     private UserService userService;
 
+    @Autowired
+    private VoucherRepository voucherRepository;
+
     @Override
-    public ReceiptExamination createReceiptExamination(ReceiptExamination receiptExamination, long registerId) {
+    public ReceiptExamination createReceiptExamination(ReceiptExamination receiptExamination, long registerId,
+            String voucherCode) {
         if (this.receiptExaminationRepository.existsByRegisterId(registerId)) {
             throw new BadRequestException("The register has paid for examination");
         }
@@ -41,6 +47,28 @@ public class ReceiptExaminationServiceImpl implements ReceiptExaminationService 
         receiptExamination.setRegister(register);
         receiptExamination.setUser(user);
         receiptExamination.setPriceTotal(register.getRegulation().getExaminationPrice());
+
+        if (voucherCode.equals("")) {
+            receiptExamination.setPriceTotal(register.getRegulation().getExaminationPrice());
+        } else {
+            Optional<Voucher> vOptional = this.voucherRepository.findById(voucherCode);
+            if (vOptional.isPresent()) {
+                Voucher voucher = vOptional.get();
+                receiptExamination.setVoucher(voucher);
+
+                if (voucher.getPercentReduction() != null) {
+                    receiptExamination.setPriceTotal(
+                            register.getRegulation().getExaminationPrice() * voucher.getPercentReduction() / 100);
+                } else if (voucher.getReducedPrice() != null) {
+                    receiptExamination
+                            .setPriceTotal(register.getRegulation().getExaminationPrice() - voucher.getReducedPrice());
+                } else {
+                    receiptExamination.setPriceTotal(register.getRegulation().getExaminationPrice());
+                }
+            } else {
+                receiptExamination.setPriceTotal(register.getRegulation().getExaminationPrice());
+            }
+        }
 
         return this.receiptExaminationRepository.save(receiptExamination);
     }
@@ -57,20 +85,45 @@ public class ReceiptExaminationServiceImpl implements ReceiptExaminationService 
     }
 
     @Override
-    public ReceiptExamination updateReceiptExamination(long receiptId, ReceiptExamination receipt) {
+    public ReceiptExamination updateReceiptExamination(long receiptId, ReceiptExamination receipt, String voucherCode) {
         User user = this.userService.getCurrentUser();
         Optional<ReceiptExamination> rOptional = this.receiptExaminationRepository.findById(receiptId);
-        
+
         if (rOptional.isPresent()) {
             ReceiptExamination receiptExamination = rOptional.get();
-            
+
             receiptExamination.setIsPayment(receipt.getIsPayment());
-            receiptExamination.setPriceTotal(receipt.getPriceTotal());
             receiptExamination.setUser(user);
+            if (voucherCode.equals("")) {
+                receiptExamination
+                        .setPriceTotal(receiptExamination.getRegister().getRegulation().getExaminationPrice());
+            } else {
+                Optional<Voucher> vOptional = this.voucherRepository.findById(voucherCode);
+                if (vOptional.isPresent()) {
+                    Voucher voucher = vOptional.get();
+                    receiptExamination.setVoucher(voucher);
+
+                    if (voucher.getPercentReduction() != null) {
+                        receiptExamination
+                                .setPriceTotal(receiptExamination.getRegister().getRegulation().getExaminationPrice()
+                                        * voucher.getPercentReduction() / 100);
+                    } else if (voucher.getReducedPrice() != null) {
+                        receiptExamination
+                                .setPriceTotal(receiptExamination.getRegister().getRegulation().getExaminationPrice()
+                                        - voucher.getReducedPrice());
+                    } else {
+                        receiptExamination
+                                .setPriceTotal(receiptExamination.getRegister().getRegulation().getExaminationPrice());
+                    }
+                } else {
+                    receiptExamination
+                            .setPriceTotal(receiptExamination.getRegister().getRegulation().getExaminationPrice());
+                }
+            }
 
             return this.receiptExaminationRepository.save(receiptExamination);
         }
-        
+
         throw new NotFoundException("ReceiptExamination does not exist!");
     }
 
@@ -79,13 +132,12 @@ public class ReceiptExaminationServiceImpl implements ReceiptExaminationService 
         if (this.receiptExaminationRepository.existsById(receiptId)) {
             try {
                 this.receiptExaminationRepository.deleteByReceiptId(receiptId);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new InternalException("Could not delete receipt!");
             }
             return true;
         }
-        
+
         throw new NotFoundException("Receipt does not exist!");
     }
 
@@ -95,8 +147,8 @@ public class ReceiptExaminationServiceImpl implements ReceiptExaminationService 
         if (rOptional.isPresent()) {
             return rOptional.get();
         }
-        
+
         throw new NotFoundException("Receipt does not exist!");
     }
-    
+
 }

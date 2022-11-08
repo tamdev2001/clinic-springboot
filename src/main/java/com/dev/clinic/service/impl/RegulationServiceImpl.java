@@ -20,22 +20,22 @@ public class RegulationServiceImpl implements RegulationService {
     @Override
     public List<Regulation> getRegulations() {
         List<Regulation> regulations = this.regulationRepository.findAll();
-        
+
         return regulations;
     }
 
     @Override
     public Regulation createRegulation(Regulation regulation) {
         regulation.setCreatedDate(new Date());
-        if(regulation.getActive() == true) {
+        if (regulation.getActive() == true) {
             List<Regulation> regulations = getRegulations();
             for (Regulation item : regulations) {
                 item.setActive(false);
             }
-            
+
         }
         Regulation newRegulation = this.regulationRepository.save(regulation);
-        
+
         return newRegulation;
     }
 
@@ -43,8 +43,8 @@ public class RegulationServiceImpl implements RegulationService {
     public Boolean deleteRegulation(Long id) {
         if (this.regulationRepository.existsById(id)) {
             Optional<Regulation> regulation = this.regulationRepository.findById(id);
-            
-            if(regulation.get().getActive() == true) {
+
+            if (regulation.get().getActive() == true) {
                 List<Regulation> regulations = getRegulations();
                 regulations.get(0).setActive(true);
             }
@@ -57,7 +57,7 @@ public class RegulationServiceImpl implements RegulationService {
     @Override
     public Regulation updateRegulation(Long id, Regulation regulation) {
         Optional<Regulation> cOptional = this.regulationRepository.findById(id);
-        if(regulation.getActive() == true) {
+        if (regulation.getActive() == true) {
             List<Regulation> regulations = getRegulations();
             for (Regulation item : regulations) {
                 item.setActive(false);
@@ -71,6 +71,15 @@ public class RegulationServiceImpl implements RegulationService {
             return updatedRegulation;
         }
 
+        throw new NotFoundException("Regulation does not exist!");
+    }
+
+    @Override
+    public Regulation getRegulationById(long id) {
+        Optional<Regulation> rOptional = this.regulationRepository.findById(id);
+        if (rOptional.isPresent()) {
+            return rOptional.get();
+        }
         throw new NotFoundException("Regulation does not exist!");
     }
 

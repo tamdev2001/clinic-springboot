@@ -59,5 +59,10 @@ public class ReceiptExamination implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "voucher_id", referencedColumnName = "id")
+    private Voucher voucher;
     
 }

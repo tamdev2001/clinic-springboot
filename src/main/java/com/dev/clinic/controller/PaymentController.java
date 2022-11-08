@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.clinic.model.ReceiptExamination;
@@ -20,7 +21,6 @@ import com.dev.clinic.service.ReceiptPrescriptionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @CrossOrigin
 @RestController
@@ -44,7 +44,7 @@ public class PaymentController {
         ReceiptPrescription receipt = this.receiptPrescriptionService.getReceiptById(id);
         return ResponseEntity.ok(receipt);
     }
-    
+
     @GetMapping("/receipt-examinations")
     public ResponseEntity<List<ReceiptExamination>> getReceiptExaminations() {
         List<ReceiptExamination> receiptExaminations = this.receiptExaminationService.getReceiptExaminations();
@@ -53,8 +53,11 @@ public class PaymentController {
     }
 
     @PostMapping("/registers/{registerId}/receipt-examinations") // Requiring authentication to get current user
-    public ResponseEntity<ReceiptExamination> createReceiptExamination(@PathVariable long registerId, @RequestBody ReceiptExamination receiptExamination) {
-        ReceiptExamination newReceiptExamination = this.receiptExaminationService.createReceiptExamination(receiptExamination, registerId);
+    public ResponseEntity<ReceiptExamination> createReceiptExamination(@PathVariable long registerId,
+            @RequestBody ReceiptExamination receiptExamination,
+            @RequestParam(required = false, defaultValue = "") String voucherCode) {
+        ReceiptExamination newReceiptExamination = this.receiptExaminationService
+                .createReceiptExamination(receiptExamination, registerId, voucherCode);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newReceiptExamination);
     }
@@ -66,9 +69,13 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(receiptPrescriptions);
     }
 
-    @PostMapping("/prescriptions/{prescriptionId}/receipt-prescriptions") // Requiring authentication to get current user
-    public ResponseEntity<ReceiptPrescription> createReceiptPrescription(@PathVariable long prescriptionId, @RequestBody ReceiptPrescription receiptPrescription) {
-        ReceiptPrescription newReceiptPrescription = this.receiptPrescriptionService.createReceiptPrescription(receiptPrescription, prescriptionId);
+    @PostMapping("/prescriptions/{prescriptionId}/receipt-prescriptions") // Requiring authentication to get current
+                                                                          // user
+    public ResponseEntity<ReceiptPrescription> createReceiptPrescription(@PathVariable long prescriptionId,
+            @RequestBody ReceiptPrescription receiptPrescription,
+            @RequestParam(required = false, defaultValue = "") String voucherCode) {
+        ReceiptPrescription newReceiptPrescription = this.receiptPrescriptionService
+                .createReceiptPrescription(receiptPrescription, prescriptionId, voucherCode);
 
         return ResponseEntity.ok(newReceiptPrescription);
     }
@@ -79,8 +86,11 @@ public class PaymentController {
     }
 
     @PutMapping("/receipt-examinations/{id}")
-    public ResponseEntity<ReceiptExamination> updateReceiptExamination(@PathVariable long id, @RequestBody ReceiptExamination receipt) {
-        ReceiptExamination newReceipt = this.receiptExaminationService.updateReceiptExamination(id, receipt);
+    public ResponseEntity<ReceiptExamination> updateReceiptExamination(@PathVariable long id,
+            @RequestBody ReceiptExamination receipt,
+            @RequestParam(required = false, defaultValue = "") String voucherCode) {
+        ReceiptExamination newReceipt = this.receiptExaminationService.updateReceiptExamination(id, receipt,
+                voucherCode);
 
         return ResponseEntity.ok(newReceipt);
     }
@@ -91,10 +101,13 @@ public class PaymentController {
     }
 
     @PutMapping("/receipt-prescriptions/{id}")
-    public ResponseEntity<ReceiptPrescription> updateReceiptPrescription(@PathVariable long id, @RequestBody ReceiptPrescription receipt) {
-        ReceiptPrescription newReceipt = this.receiptPrescriptionService.updateReceiptPrescription(id, receipt);
+    public ResponseEntity<ReceiptPrescription> updateReceiptPrescription(@PathVariable long id,
+            @RequestBody ReceiptPrescription receipt,
+            @RequestParam(required = false, defaultValue = "") String voucherCode) {
+        ReceiptPrescription newReceipt = this.receiptPrescriptionService.updateReceiptPrescription(id, receipt,
+                voucherCode);
 
         return ResponseEntity.ok(newReceipt);
     }
-    
+
 }

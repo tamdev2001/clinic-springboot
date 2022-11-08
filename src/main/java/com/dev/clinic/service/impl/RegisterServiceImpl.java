@@ -15,6 +15,7 @@ import com.dev.clinic.model.Register;
 import com.dev.clinic.model.User;
 import com.dev.clinic.repository.RegisterRepository;
 import com.dev.clinic.service.RegisterService;
+import com.dev.clinic.service.RegulationService;
 import com.dev.clinic.service.UserService;
 import com.dev.clinic.util.CommonMethod;
 
@@ -27,10 +28,14 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RegulationService regulationService;
+
     @Override
     public Register creatRegister(Register register) {
         register.setVerified(false);
         register.setCreatedDate(new Date());
+        register.setRegulation(this.regulationService.getRegulationById(1));
 
         String currentUsername = CommonMethod.getCurrentUsername();
         if (currentUsername != null) {

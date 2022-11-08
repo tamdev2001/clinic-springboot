@@ -8,6 +8,8 @@ public interface RegulationService {
 
     List<Regulation> getRegulations();
 
+    Regulation getRegulationById(long id);
+
     Regulation createRegulation(Regulation regulation);
 
     Boolean deleteRegulation(Long id);
