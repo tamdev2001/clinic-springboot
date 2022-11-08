@@ -86,7 +86,6 @@ public class AdminController {
         String img;
         User user = new User();
         try {
-
             Map resolve;
             resolve = this.cloudinary.uploader().upload(file.getBytes(),
                     ObjectUtils.asMap("resource_type", "auto"));
