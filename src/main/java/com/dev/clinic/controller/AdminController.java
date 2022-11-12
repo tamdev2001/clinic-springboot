@@ -24,6 +24,9 @@ import com.dev.clinic.dto.UserDto;
 import com.dev.clinic.exception.NotFoundException;
 import com.dev.clinic.model.Certificate;
 import com.dev.clinic.model.Medicine;
+import com.dev.clinic.model.Prescription;
+import com.dev.clinic.model.PrescriptionMedicine;
+import com.dev.clinic.model.Register;
 import com.dev.clinic.model.Regulation;
 import com.dev.clinic.model.Role;
 import com.dev.clinic.model.Unit;
@@ -31,10 +34,11 @@ import com.dev.clinic.model.User;
 import com.dev.clinic.repository.RoleRepository;
 import com.dev.clinic.service.CertificateService;
 import com.dev.clinic.service.MedicineService;
+import com.dev.clinic.service.PrescriptionService;
+import com.dev.clinic.service.RegisterService;
 import com.dev.clinic.service.RegulationService;
 import com.dev.clinic.service.UnitService;
 import com.dev.clinic.service.UserService;
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
@@ -59,10 +63,52 @@ public class AdminController {
     private UserService userService;
 
     @Autowired
+    private RegisterService registerService;
+
+    @Autowired
+    private PrescriptionService prescriptionService;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
     private Cloudinary cloudinary;
+
+    //#region
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getRoles() {
+        List<Role> roles = this.userService.getRoles();
+        return ResponseEntity.ok(roles);
+    }
+
+    @PostMapping("/roles")
+    public ResponseEntity<Role> createRole(@RequestBody Role role) {
+        try {
+            Role newRole = this.userService.createRole(role);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newRole);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    ////#endregion
+
+    //#region Prescription
+    @GetMapping("/prescriptions")
+    public ResponseEntity<List<Prescription>> getPrescriptions() {
+        List<Prescription> prescriptions = this.prescriptionService.getPrescriptions();
+        return ResponseEntity.ok(prescriptions);
+    }
+
+    @GetMapping("/prescriptionDetails")
+    public ResponseEntity<List<PrescriptionMedicine>> getPrescriptionDetails() {
+        List<PrescriptionMedicine> prescriptionDetails = this.prescriptionService.getPrescriptionDetails();
+        return ResponseEntity.ok(prescriptionDetails);
+    }
+
+    ////#endregion
 
     // #region user
     @GetMapping("/users")
@@ -297,4 +343,13 @@ public class AdminController {
         return ResponseEntity.ok(updaRegulation);
     }
     // #endregion
+
+    //#region Register
+    @GetMapping("/registers")
+    public ResponseEntity<List<Register>> getRegisters() {
+        List<Register> registers = this.registerService.getAllRegister();
+        return ResponseEntity.ok(registers);
+    }
+
+    //#endregion
 }

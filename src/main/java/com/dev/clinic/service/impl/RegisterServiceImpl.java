@@ -128,4 +128,11 @@ public class RegisterServiceImpl implements RegisterService {
         return null;
     }
 
+    @Override
+    public List<Register> getAllRegister() {
+        List<Register> registers = this.registerRepository.findAll();
+
+        return registers;
+    }
+
 }

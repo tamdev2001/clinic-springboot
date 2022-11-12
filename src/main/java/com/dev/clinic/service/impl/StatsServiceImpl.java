@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dev.clinic.model.Role;
 import com.dev.clinic.repository.StatsRepository;
 import com.dev.clinic.service.StatsService;
 import com.dev.clinic.util.Utils;
@@ -30,6 +31,16 @@ public class StatsServiceImpl implements StatsService{
     public List<Object[]> getStatsRevenueRpMonthByYear(int year) throws RuntimeException {
         try {
             return this.utils.customListStatsMonth(this.statsRepository.getStatsRevenueRpMonthByYear(year));
+        } catch (Exception ex) {
+            String error_ms = ex.getMessage();
+            throw new RuntimeException(error_ms);
+        }
+    }
+
+    @Override
+    public List<Object[]> getStatsRoles() {
+        try {
+            return this.statsRepository.getStatsRoles();
         } catch (Exception ex) {
             String error_ms = ex.getMessage();
             throw new RuntimeException(error_ms);

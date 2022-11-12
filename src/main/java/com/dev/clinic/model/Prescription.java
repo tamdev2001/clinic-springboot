@@ -52,7 +52,7 @@ public class Prescription implements Serializable {
 
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "certificate_id", nullable = false, referencedColumnName = "id")
     private Certificate certificate;
 

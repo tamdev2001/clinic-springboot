@@ -268,4 +268,18 @@ public class UserServiceImpl implements UserService {
         throw new NotFoundException("User does not exist!");
     }
 
+    @Override
+    public List<Role> getRoles() {
+        List<Role> roles = this.roleRepository.findAll();
+
+        return roles;
+    }
+
+    @Override
+    public Role createRole(Role role) {
+        Role newRole = this.roleRepository.save(role);
+
+        return newRole;
+    }
+
 }

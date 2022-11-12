@@ -38,4 +38,9 @@ public interface UserService {
     UserDto createAUser(User user);
 
     User updateAUser(long id, User user, List<Role> role);
+
+    List<Role> getRoles();
+
+    Role createRole(Role role);
+
 }

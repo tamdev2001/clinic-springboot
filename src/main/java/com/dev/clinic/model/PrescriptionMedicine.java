@@ -35,9 +35,9 @@ public class PrescriptionMedicine implements Serializable {
     @Column
     private Integer quantity;
 
-    @JsonIgnore
+    // @JsonIgnore
     @JoinColumn(name = "prescription_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Prescription prescription;
 
     @JoinColumn(name = "medicine_id", referencedColumnName = "id")

@@ -159,11 +159,24 @@ public class PresciptionServiceImpl implements PrescriptionService {
     @Override
     public List<Prescription> getPrescriptions() {
         List<Prescription> prescriptions = this.prescriptionRepository.findAll();
+        for (Prescription prescription : prescriptions) {
+            prescription.getCertificate();
+        }
         if (prescriptions.isEmpty()) {
             throw new NotFoundException("Does not have any prescriptions!");
         }
 
         return prescriptions;
+    }
+
+    @Override
+    public List<PrescriptionMedicine> getPrescriptionDetails() {
+        List<PrescriptionMedicine> prescriptionDetails = this.prescriptionMedicineRepository.findAll();
+        if (prescriptionDetails.isEmpty()) {
+            throw new NotFoundException("Does not have any prescription medicine!");
+        }
+
+        return prescriptionDetails;
     }
 
 }
