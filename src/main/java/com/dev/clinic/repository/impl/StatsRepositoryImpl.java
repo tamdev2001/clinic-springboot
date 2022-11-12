@@ -6,10 +6,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Repository;
 
 import com.dev.clinic.model.ReceiptExamination;
 import com.dev.clinic.model.ReceiptPrescription;
+import com.dev.clinic.model.Role;
+import com.dev.clinic.model.User;
 import com.dev.clinic.repository.StatsRepository;
 
 @Repository
@@ -26,6 +31,9 @@ public class StatsRepositoryImpl implements StatsRepository{
 
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Override
     public List<Object[]> getStatsRevenueReMonthByYear(int year) {
@@ -75,6 +83,13 @@ public class StatsRepositoryImpl implements StatsRepository{
         query.orderBy(builder.asc(builder.function("MONTH", Integer.class, rootRp.get("createdDate"))));
         Query q = em.createQuery(query);
         return q.getResultList();
+    }
+
+    @Override
+    public List<Object[]> getStatsRoles() {
+        // Initialize the query
+        	
+        return null;
     }
     
 }

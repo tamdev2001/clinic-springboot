@@ -54,7 +54,7 @@ public class Medicine implements Serializable {
     @Column
     private Integer quantity;
 
-    @JsonIgnore
+    // @JsonIgnore
     @Column
     private Boolean active = true;
 

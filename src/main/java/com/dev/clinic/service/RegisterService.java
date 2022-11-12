@@ -10,6 +10,8 @@ public interface RegisterService {
 
     List<Register> getRegisters(String name, String phone, Boolean verified, String examinationTime, String createdDate);
 
+    List<Register> getAllRegister();
+
     Register getRegisterById(long id);
 
     Register verifiedRegister(long id);

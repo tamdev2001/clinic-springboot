@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.criteria.Expression;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -117,5 +118,9 @@ public class User implements Serializable {
             this.roles.remove(role);
             role.getUsers().remove(this);
         }
+    }
+
+    public static Expression get(String string) {
+        return null;
     }
 }
